@@ -1,0 +1,1 @@
+void printMatrix(int **M, int rows, int cols);
