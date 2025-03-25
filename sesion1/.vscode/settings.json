@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/rubennmg/CAP/sesion1",
+            "binaryPath": "/home/rubennmg/CAP/sesion1/1-multiply_matrices",
+            "binaryArgs": []
+        }
+    ]
+}
