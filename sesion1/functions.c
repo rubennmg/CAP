@@ -4,7 +4,13 @@
 #include <time.h>
 #include "functions.h"
 
-void printMatrix(int rows, int columns, int **matrix)
+/**
+ * Prints a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @param matrix Pointer to the matrix to be printed.
+ */
+void print_matrix(int rows, int columns, int **matrix)
 {
     for (int i = 0; i < rows; i++)
     {
@@ -18,7 +24,15 @@ void printMatrix(int rows, int columns, int **matrix)
     printf("\n");
 }
 
-void printProduct(int **A, int **B, int **C, int rows, int columns)
+/**
+ * Prints the product of two matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C Pointer to the resulting matrix.
+ * @param rows Number of rows in the matrices.
+ * @param columns Number of columns in the matrices.
+ */
+void print_product(int **A, int **B, int **C, int rows, int columns)
 {
     if (rows > 10 || columns > 10)
     {
@@ -63,13 +77,15 @@ void printProduct(int **A, int **B, int **C, int rows, int columns)
     }
 }
 
-void measureTime(int rows, int columns, int **A, int **B, int **C, void (*function)(int, int, int **, int **, int **))
+/**
+ * Checks if the matrix was allocated correctly.
+ * @param matrix Pointer to the matrix to be checked.
+ */
+void check_err(int **matrix)
 {
-    clock_t start, end;
-
-    start = clock();
-    function(rows, columns, A, B, C);
-    end = clock();
-
-    printf("Time: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
+    if (matrix == NULL)
+    {
+        fprintf(stderr, "Error: Could not allocate.\n");
+        exit(1);
+    }
 }
