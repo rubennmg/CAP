@@ -20,6 +20,12 @@ void printMatrix(int rows, int columns, int **matrix)
 
 void printProduct(int **A, int **B, int **C, int rows, int columns)
 {
+    if (rows > 10 || columns > 10)
+    {
+        printf("Matrices are too big to be printed\n");
+        return;
+    }
+
     printf("\n");
 
     for (int i = 0; i < rows; i++)
