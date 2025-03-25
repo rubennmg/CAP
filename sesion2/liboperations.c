@@ -2,6 +2,60 @@
 #include <stdlib.h>
 
 /**
+ * Allocates memory for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @return Pointer to the matrix.
+ */
+int **allocate_matrix(int rows, int columns)
+{
+    int **matrix = (int **)malloc(rows * sizeof(int *));
+    if (matrix == NULL)
+    {
+        fprintf(stderr, "Error: Out of memory\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        matrix[i] = (int *)malloc(columns * sizeof(int));
+        if (matrix[i] == NULL)
+        {
+            fprintf(stderr, "Error: Out of memory\n");
+            return NULL;
+        }
+    }
+
+    return matrix;
+}
+
+/**
+ * Frees memory allocated for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param matrix Pointer to the matrix.
+ */
+void free_matrix(int rows, int **matrix)
+{
+    for (int i = 0; i < rows; i++)
+        free(matrix[i]);
+
+    free(matrix);
+}
+
+/**
+ * Generates random numbers for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @param matrix Pointer to the matrix.
+ */
+void generate_matrix(int rows, int columns, int **matrix)
+{
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)
+            matrix[i][j] = rand() % 10; // Generate numbers between 0 and 9
+}
+
+/**
  * Multiplies two matrices in row-major order.
  * @param rows Number of rows in the matrices.
  * @param columns Number of columns in the matrices.
