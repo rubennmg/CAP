@@ -1,1 +1,15 @@
 1-multiply_matrices
+
+# Latex
+*.aux
+*.gz
+*.out
+*.fls
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+*.lof
+*.lot
