@@ -56,7 +56,6 @@ void row_major_mul(int rows, int columns, int **A, int **B, int **C)
     {
         for (int j = 0; j < columns; j++)
         {
-            C[i][j] = 0;
             for (int k = 0; k < columns; k++)
             {
                 C[i][j] += A[i][k] * B[k][j];
@@ -72,7 +71,6 @@ void column_major_mul(int rows, int columns, int **A, int **B, int **C)
     {
         for (int i = 0; i < rows; i++)
         {
-            C[i][j] = 0;
             for (int k = 0; k < columns; k++)
             {
                 C[i][j] += A[i][k] * B[k][j];
