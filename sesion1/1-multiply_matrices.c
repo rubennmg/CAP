@@ -4,7 +4,12 @@
 #include <time.h>
 #include "functions.h"
 
-// Function to allocate a matrix of size rows x columns
+/**
+ * Allocates memory for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @return Pointer to the matrix.
+ */
 int **allocate_matrix(int rows, int columns)
 {
     int **matrix = (int **)malloc(rows * sizeof(int *));
@@ -27,7 +32,11 @@ int **allocate_matrix(int rows, int columns)
     return matrix;
 }
 
-// Function to free the memory of the matrix
+/**
+ * Frees memory allocated for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param matrix Pointer to the matrix.
+ */
 void free_matrix(int rows, int **matrix)
 {
     for (int i = 0; i < rows; i++)
@@ -36,7 +45,12 @@ void free_matrix(int rows, int **matrix)
     free(matrix);
 }
 
-// Function to generate a random matrix of size rows x columns
+/**
+ * Generates random numbers for a matrix.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @param matrix Pointer to the matrix.
+ */
 void generate_matrix(int rows, int columns, int **matrix)
 {
     for (int i = 0; i < rows; i++)
@@ -44,7 +58,14 @@ void generate_matrix(int rows, int columns, int **matrix)
             matrix[i][j] = rand() % 10; // Generate numbers between 0 and 9
 }
 
-// Function to add matrices in row-major order
+/**
+ * Multiplies two matrices in row-major order.
+ * @param rows Number of rows in the matrices.
+ * @param columns Number of columns in the matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C Pointer to the resulting matrix.
+ */
 void row_major_mul(int rows, int columns, int **A, int **B, int **C)
 {
     for (int i = 0; i < rows; i++)
@@ -53,7 +74,14 @@ void row_major_mul(int rows, int columns, int **A, int **B, int **C)
                 C[i][j] += A[i][k] * B[k][j];
 }
 
-// Function to add matrices in column-major order
+/**
+ * Multiplies two matrices in column-major order.
+ * @param rows Number of rows in the matrices.
+ * @param columns Number of columns in the matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C Pointer to the resulting matrix.
+ */
 void column_major_mul(int rows, int columns, int **A, int **B, int **C)
 {
     for (int j = 0; j < columns; j++)
@@ -62,7 +90,15 @@ void column_major_mul(int rows, int columns, int **A, int **B, int **C)
                 C[i][j] += A[i][k] * B[k][j];
 }
 
-// Function to add matrices in z-order order
+/**
+ * Multiplies two matrices in Z-order.
+ * @param rows Number of rows in the matrices.
+ * @param columns Number of columns in the matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C Pointer to the resulting matrix.
+ * @param block_size Size of the block to be processed. Must be a divisor of rows and columns.
+ */
 void zorder_mul(int rows, int columns, int **A, int **B, int **C, int block_size)
 {
     if (rows % block_size != 0 || columns % block_size != 0)
@@ -80,6 +116,33 @@ void zorder_mul(int rows, int columns, int **A, int **B, int **C, int block_size
                             C[ii][jj] += A[ii][kk] * B[kk][jj];
 }
 
+/**
+ * Processes command line arguments.
+ * @param argc Number of arguments.
+ * @param argv Array of arguments.
+ * @param rows Pointer to the number of rows.
+ * @param columns Pointer to the number of columns.
+ * @param block_size Pointer to the block size.
+ */
+void process_arguments(int argc, char *argv[], int *rows, int *columns, int *block_size)
+{
+    if (argc != 4)
+    {
+        fprintf(stderr, "Usage: %s <rows> <columns> <block_size>\n", argv[0]);
+        exit(1);
+    }
+
+    *rows = atoi(argv[1]);
+    *columns = atoi(argv[2]);
+    *block_size = atoi(argv[3]);
+}
+
+/**
+ * Main function.
+ * @param argc Number of arguments.
+ * @param argv Array of arguments.
+ * @return 0 if the program ends successfully, 1 otherwise.
+ */
 int main(int argc, char *argv[])
 {
     int rows, columns, block_size;                   // Matrix size (rows x columns)
@@ -87,16 +150,8 @@ int main(int argc, char *argv[])
     clock_t start, end;                              // To measure time
     double execution_time;                           // Time in seconds
 
-    // Get matrices size
-    if (argc != 4)
-    {
-        fprintf(stderr, "Usage: %s <rows> <columns> <block_size>\n", argv[0]);
-        exit(1);
-    }
-
-    rows = atoi(argv[1]);
-    columns = atoi(argv[2]);
-    block_size = atoi(argv[3]);
+    // Process arguments
+    process_arguments(argc, argv, &rows, &columns, &block_size);
 
     // Allocate memory for matrices
     A = allocate_matrix(rows, columns);
