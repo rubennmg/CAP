@@ -1,0 +1,73 @@
+\documentclass{article} 
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{geometry, graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{config}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{xcolor}
+\renewcommand{\baselinestretch}{1.4} 
+\definecolor{darkred}{RGB}{139,0,0}
+\definecolor{darkgreen}{RGB}{0,100,0}
+\definecolor{darkblue}{RGB}{0,0,139}
+
+% Fonts %
+\usepackage{baskervillef}
+\usepackage[varqu,varl,var0]{inconsolata}
+\usepackage[scale=.90,type1]{cabin}
+\usepackage[baskerville,vvarbb]{newtxmath}
+\usepackage[cal=boondoxo]{mathalfa}
+
+% Page config
+\geometry{left=2.3cm, right=2.3cm, top=3cm, bottom=3.5cm}
+\setlength{\headheight}{22.54448pt}
+\setlist{itemsep=0.5ex, topsep=0.5ex}
+
+% Constants
+\newcommand{\titulo}{Sesión 1}
+\newcommand{\asignatura}{Computación de Altas Prestaciones}
+\newcommand{\asignaturaAbbr}{CPP}
+\newcommand{\master}{M\'aster en Ingenier\'ia Inform\'atica}
+\newcommand{\autor}{Rub\'en Mart\'inez Ginzo}
+\newcommand{\autorUO}{Rub\'en Mart\'inez Ginzo, UO282651}
+\newcommand{\email}{UO282651@uniovi.es}
+\newcommand{\fecha}{17 de marzo 2025}
+\newcommand{\imagen}{img/UniOvi_bn.jpg}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        {\fontsize{38pt}{42pt}\selectfont \textbf{\titulo}} \\
+        \vspace{1cm}
+        {\fontsize{22pt}{26pt}\selectfont \textbf{\asignatura}} \\
+        \vspace{0.5cm}
+        {\fontsize{16pt}{20pt}\selectfont \textbf{\master}} \\
+        \vspace{3cm}
+        \includegraphics[width=0.5\textwidth]{\imagen}
+        \vspace{4cm}
+        
+        {\Large \textbf{\textit{Autor:}}} \\
+        \vspace{0.4cm}
+        {\Large \textit{\autor, \email}}
+        \vfill
+
+        \vspace{1cm}
+        {\Large {\fecha}}
+    \end{center}
+\end{titlepage}
+\include{caps/index}
+\include{caps/intro}
+\include{caps/1}
+\end{document}
