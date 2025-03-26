@@ -2,7 +2,7 @@ import ctypes
 import sys
 import random
 import time
-from typing import List
+from typing import List, Dict, Callable
 
 type matrix = List[List[int]]
 
@@ -68,6 +68,25 @@ def print_matrix(matrix: matrix) -> None:
     for row in matrix:
         print(row)
     print()
+    
+def run_phase_2(matrix_size: int, block_size: int) -> Dict[str, float]:
+    """Run phase 2 of the experiment."""
+    
+    def measure_time(mul_func: Callable, *args) -> float:
+        """Helper function to measure execution time of a matrix multiplication."""
+        start = time.time()
+        mul_func(*args)
+        return time.time() - start
+
+    A_c = matrix_to_c(generate_matrix(matrix_size, matrix_size))
+    B_c = matrix_to_c(generate_matrix(matrix_size, matrix_size))
+    C_c = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
+
+    return {
+        "Row-major order": measure_time(lib.row_major_mul, matrix_size, matrix_size, A_c, B_c, C_c),
+        "Column-major order": measure_time(lib.column_major_mul, matrix_size, matrix_size, A_c, B_c, C_c),
+        "Z order": {block_size: measure_time(lib.zorder_mul, matrix_size, matrix_size, A_c, B_c, C_c, block_size)}
+    }
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
