@@ -1,6 +1,7 @@
 import sys
 import random
 import time
+import numpy as np
 from typing import List, Dict
 
 type matrix = List[List[int]]
@@ -52,20 +53,29 @@ def print_matrix(matrix: matrix):
     for row in matrix:
         print(row)
     print()
+    
+def verify_multiplication(a: matrix, b: matrix, c: matrix) -> bool:
+    """"Verify the result of a matrix multiplication."""
+    c_expected = np.dot(np.array(a), np.array(b))
+
+    return np.allclose(c_expected, np.array(c))
 
 def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
-    """Run phase 1 of the experiment."""
-    
+    """Run phase 1 of the experiment with validation."""
+
     def measure_time(mul_func: callable, a: matrix, b: matrix) -> float:
-        """Helper function to measure execution time of a matrix multiplication."""
+        """Helper function to measure execution time of a matrix multiplication and validate the result."""
         C = [[0] * matrix_size for _ in range(matrix_size)]
         start = time.time()
         mul_func(a, b, C)
-        return time.time() - start
+        exec_time = time.time() - start
+        
+        assert verify_multiplication(a, b, C), f"❌ Error in {mul_func.__name__}!"
+        return exec_time
 
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
-    
+
     return {
         "Row-major order": measure_time(row_major_mul, A, B),
         "Column-major order": measure_time(column_major_mul, A, B),
