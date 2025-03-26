@@ -57,8 +57,7 @@ def print_matrix(matrix: matrix):
 def verify_multiplication(a: matrix, b: matrix, c: matrix) -> bool:
     """"Verify the result of a matrix multiplication."""
     c_expected = np.dot(np.array(a), np.array(b))
-
-    return np.allclose(c_expected, np.array(c))
+    return np.array_equal(np.array(c), c_expected)
 
 def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
     """Run phase 1 of the experiment with validation."""
