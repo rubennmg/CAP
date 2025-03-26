@@ -21,35 +21,25 @@ lib.free_matrix.restype = None
 lib.generate_matrix.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.POINTER(ctypes.c_int))]
 lib.generate_matrix.restype = None
 
-# row_major_mul function prototype
-lib.row_major_mul.argtypes = [
-    ctypes.c_int, 
+# Common arguments for matrix multiplication functions
+common_args = [
+    ctypes.c_int,
     ctypes.c_int,
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int))
 ]
+
+# row_major_mul function prototype
+lib.row_major_mul.argtypes = common_args
 lib.row_major_mul.restype = None
 
 # column_major_mul function prototype
-lib.column_major_mul.argtypes = [
-    ctypes.c_int, 
-    ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int))
-]
+lib.column_major_mul.argtypes = common_args
 lib.column_major_mul.restype = None
 
 # zorder_mul function prototype
-lib.zorder_mul.argtypes = [
-    ctypes.c_int, 
-    ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.c_int
-]
+lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
 
 def matrix_to_python(matrix_c: matrix, rows: int, columns: int) -> matrix:

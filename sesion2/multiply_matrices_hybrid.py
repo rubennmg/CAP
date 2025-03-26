@@ -9,35 +9,25 @@ type matrix = List[List[int]]
 # Load shared library
 lib = ctypes.CDLL('./liboperations.so')
 
-# row_major_mul function prototype
-lib.row_major_mul.argtypes = [
-    ctypes.c_int, 
+# Common arguments for matrix multiplication functions
+common_args = [
+    ctypes.c_int,
     ctypes.c_int,
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int))
 ]
+
+# row_major_mul function prototype
+lib.row_major_mul.argtypes = common_args
 lib.row_major_mul.restype = None
 
 # column_major_mul function prototype
-lib.column_major_mul.argtypes = [
-    ctypes.c_int, 
-    ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int))
-]
+lib.column_major_mul.argtypes = common_args
 lib.column_major_mul.restype = None
 
 # zorder_mul function prototype
-lib.zorder_mul.argtypes = [
-    ctypes.c_int, 
-    ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),
-    ctypes.c_int
-]
+lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
 
 def generate_matrix(rows: int, cols: int) -> matrix:
