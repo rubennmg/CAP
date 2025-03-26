@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /**
  * Allocates memory for a matrix.
@@ -50,9 +51,24 @@ void free_matrix(int rows, int **matrix)
  */
 void generate_matrix(int rows, int columns, int **matrix)
 {
+    srand(clock());
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < columns; j++)
             matrix[i][j] = rand() % 10; // Generate numbers between 0 and 9
+}
+
+/**
+ * Fills a matrix with a specific value.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @param matrix Pointer to the matrix.
+ * @param value Value to fill the matrix with.
+ */
+void fill_matrix(int rows, int columns, int **matrix, int value)
+{
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)
+            matrix[i][j] = value;
 }
 
 /**
