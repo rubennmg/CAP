@@ -1,11 +1,15 @@
 from multiply_matrices import run_phase_1
 from multiply_matrices_hybrid import run_phase_2
+from typing import List, Dict
+
+type matrix = List[List[int]]
 
 row_major_str = "Row-major order"
 column_major_str = "Column-major order"
 z_order_str = "Z order"
 
-def run_phase(id: int, matrix_sizes, iterations):
+def run_phase(id: int, matrix_sizes: List[int], iterations: int):
+    """Runs a phase of the experiment."""
     results = {}
     
     for matrix_size in matrix_sizes:
@@ -15,8 +19,8 @@ def run_phase(id: int, matrix_sizes, iterations):
     
     print_results(matrix_sizes, iterations, results)
 
-
-def calculate_block_sizes(matrix_size):
+def calculate_block_sizes(matrix_size: int) -> List[int]:
+    """Calculate the block sizes for the given matrix size."""
     block_sizes = []
     for block_size in range(2, matrix_size + 1):
         if matrix_size % block_size == 0 and matrix_size // block_size >= 2:
@@ -24,7 +28,7 @@ def calculate_block_sizes(matrix_size):
     return block_sizes
 
 
-def initialize_results(results, matrix_size, block_sizes):
+def initialize_results(results: Dict[str, float], matrix_size: int, block_sizes: List[int]):
     if matrix_size not in results:
         results[matrix_size] = {
             row_major_str: 0.0,
@@ -32,21 +36,21 @@ def initialize_results(results, matrix_size, block_sizes):
             z_order_str: {block_size: 0 for block_size in block_sizes}
         }
 
-def process_block_sizes(id, matrix_size, block_sizes, iterations, results):
+def process_block_sizes(id: int, matrix_size: int, block_sizes: List[int], iterations: int, results: Dict[str, float]):
     for block_size in block_sizes:
         for _ in range(iterations):
             current_result = run_phase_1(matrix_size, block_size) if id == 1 else run_phase_2(matrix_size, block_size)
             update_results(results, matrix_size, current_result)
 
 
-def update_results(results, matrix_size, current_result):
+def update_results(results: Dict[str, float], matrix_size: int, current_result: Dict[str, float]):
     results[matrix_size][row_major_str] += current_result[row_major_str]
     results[matrix_size][column_major_str] += current_result[column_major_str]
     for bz, time in current_result[z_order_str].items():
         results[matrix_size][z_order_str][bz] += time
 
 
-def print_results(matrix_sizes, iterations, results):
+def print_results(matrix_sizes: List[int], iterations: int, results: Dict[str, float]):
     print("Matrix size;Block-size;Row-major (s);Column-major (s);Z order (s)")
     
     for matrix_size in matrix_sizes:
