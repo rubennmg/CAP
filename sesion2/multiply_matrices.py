@@ -1,7 +1,7 @@
 import sys
 import random
 import time
-import numpy as np
+from utils import verify_multiplication
 from typing import List, Dict
 
 type matrix = List[List[int]]
@@ -53,11 +53,6 @@ def print_matrix(matrix: matrix):
     for row in matrix:
         print(row)
     print()
-    
-def verify_multiplication(a: matrix, b: matrix, c: matrix) -> bool:
-    """"Verify the result of a matrix multiplication."""
-    c_expected = np.dot(np.array(a), np.array(b))
-    return np.array_equal(np.array(c), c_expected)
 
 def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
     """Run phase 1 of the experiment with validation."""
