@@ -1,5 +1,6 @@
 from multiply_matrices import run_phase_1
 from multiply_matrices_hybrid import run_phase_2
+from multiply_matrices_hybrid_pro import run_phase_3
 from typing import List, Dict
 
 type matrix = List[List[int]]
@@ -39,9 +40,13 @@ def initialize_results(results: Dict[str, float], matrix_size: int, block_sizes:
 def process_block_sizes(id: int, matrix_size: int, block_sizes: List[int], iterations: int, results: Dict[str, float]):
     for block_size in block_sizes:
         for _ in range(iterations):
-            current_result = run_phase_1(matrix_size, block_size) if id == 1 else run_phase_2(matrix_size, block_size)
+            if id == 1:
+                current_result = run_phase_1(matrix_size, block_size)
+            elif id == 2:
+                current_result = run_phase_2(matrix_size, block_size)
+            else:
+                current_result = run_phase_3(matrix_size, block_size)
             update_results(results, matrix_size, current_result)
-
 
 def update_results(results: Dict[str, float], matrix_size: int, current_result: Dict[str, float]):
     results[matrix_size][row_major_str] += current_result[row_major_str]
@@ -67,3 +72,4 @@ if __name__ == "__main__":
     
     run_phase(1, matrix_sizes, iterations)
     run_phase(2, matrix_sizes, iterations)
+    run_phase(3, matrix_sizes, iterations)
