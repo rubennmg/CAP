@@ -66,13 +66,11 @@ def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
     
-    times = {
+    return {
         "Row-major order": measure_time(row_major_mul, A, B),
         "Column-major order": measure_time(column_major_mul, A, B),
         "Z order": {block_size: measure_time(lambda a, b, c: zorder_mul(a, b, c, block_size), A, B)}
     }
-
-    return times
     
 if __name__ == "__main__":  
     if len(sys.argv) != 4:
