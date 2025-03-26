@@ -1,9 +1,9 @@
 from multiply_matrices import run_phase_1
 
 if __name__ == "__main__":
-    matrix_sizes = [16]
-    block_sizes = [2]
-    iterations = 1
+    matrix_sizes = [2, 4, 8, 16, 32]
+    block_sizes = []
+    iterations = 10
     results = {}
     
     row_major_str = "Row-major order"
@@ -11,11 +11,14 @@ if __name__ == "__main__":
     z_order_str = "Z order"
 
     for matrix_size in matrix_sizes:
+        for block_size in range(2, matrix_size + 1):
+            if matrix_size % block_size == 0 and matrix_size // block_size >= 2:
+                block_sizes.append(block_size)
         if matrix_size not in results:
             results[matrix_size] = {
                 row_major_str: 0.0,
                 column_major_str: 0.0,
-                z_order_str: {block_size: 0.0 for block_size in block_sizes}
+                z_order_str: {block_size: 0 for block_size in block_sizes}
             }
 
         for block_size in block_sizes:
@@ -27,9 +30,11 @@ if __name__ == "__main__":
                 
                 for bz, time in current_result[z_order_str].items():
                     results[matrix_size][z_order_str][bz] += time
+        
+        block_sizes.clear()
 
     # Encabezado de la tabla
-    print("Matrix size;Block-size;Row-major order (s);Column-major order (s);Z order (s)")             
+    print("Matrix size;Block-size;Row-major (s);Column-major (s);Z order (s)")             
    
     # Imprimir resultados
     for matrix_size in matrix_sizes:
