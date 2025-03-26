@@ -59,6 +59,20 @@ void generate_matrix(int rows, int columns, int **matrix)
 }
 
 /**
+ * Fills a matrix with a specific value.
+ * @param rows Number of rows in the matrix.
+ * @param columns Number of columns in the matrix.
+ * @param matrix Pointer to the matrix.
+ * @param value Value to fill the matrix with.
+ */
+void fill_matrix(int rows, int columns, int **matrix, int value)
+{
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < columns; j++)
+            matrix[i][j] = value;
+}
+
+/**
  * Multiplies two matrices in row-major order.
  * @param rows Number of rows in the matrices.
  * @param columns Number of columns in the matrices.
@@ -169,6 +183,11 @@ int main(int argc, char *argv[])
     srand(time(NULL)); // Initialize the random number generator once
     generate_matrix(rows, columns, A);
     generate_matrix(rows, columns, B);
+
+    // Initialize result matrices with zeros
+    fill_matrix(rows, columns, C_rows, 0);
+    fill_matrix(rows, columns, C_columns, 0);
+    fill_matrix(rows, columns, C_zorder, 0);
 
     // Row major multiplication
     start = clock();
