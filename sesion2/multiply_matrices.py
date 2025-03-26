@@ -70,7 +70,7 @@ def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
         mul_func(a, b, C)
         exec_time = time.time() - start
         
-        assert verify_multiplication(a, b, C), f"❌ Error in {mul_func.__name__}!"
+        assert verify_multiplication(a, b, C), f"Error in {mul_func.__name__}!"
         return exec_time
 
     A = generate_matrix(matrix_size, matrix_size)
