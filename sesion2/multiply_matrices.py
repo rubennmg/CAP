@@ -1,7 +1,7 @@
 import sys
 import random
 import time
-from utils import verify_multiplication
+from utils import verify_multiplication, print_matrix
 from typing import List, Dict
 
 type matrix = List[List[int]]
@@ -43,16 +43,6 @@ def zorder_mul(a: matrix, b: matrix, c: matrix, block_size: int) -> None:
                     for jj in range(j, min(j + block_size, columns)):
                         for kk in range(k, min(k + block_size, columns)):
                             c[ii][jj] += a[ii][kk] * b[kk][jj]
-                            
-def print_matrix(matrix: matrix):
-    """Prints a matrix."""
-    if len(matrix) > 10:
-        print("Matrix too large to print\n")
-        return
-    
-    for row in matrix:
-        print(row)
-    print()
 
 def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
     """Run phase 1 of the experiment with validation."""
