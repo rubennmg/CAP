@@ -47,48 +47,40 @@ lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
     
 def run_phase_3(matrix_size: int, block_size: int) -> Dict[str, float]:
-    """Run phase 3 of the experimient"""
+    """Run phase 3 of the experiment, measuring matrix multiplication times."""
     
-    def measure_time(mul_func: Callable, matrix_size: int, a: matrix, b: matrix, a_python: matrix, b_python: matrix, block_size_arg: int = None) -> float:
-        """Measure the time of a matrix multiplication function."""
-        C = lib.allocate_matrix(matrix_size, matrix_size)
+    def measure_time(mul_func: Callable, a: ctypes.POINTER, b: ctypes.POINTER, c:ctypes.POINTER, a_python: matrix, b_python: matrix, block_size_arg: int = None) -> float:
+        """Measure the execution time of matrix multiplication functions used in phase 3."""
+        lib.fill_matrix(matrix_size, matrix_size, c, 0)
         
-        lib.fill_matrix(matrix_size, matrix_size, C, 0)
-        
+        start = time.time()
         if mul_func == lib.zorder_mul:
-            start = time.time()
-            mul_func(matrix_size, matrix_size, a, b, C, block_size_arg)
+            mul_func(matrix_size, matrix_size, a, b, c, block_size_arg)
         else:
-            start = time.time()
-            mul_func(matrix_size, matrix_size, a, b, C)
-        
+            mul_func(matrix_size, matrix_size, a, b, c)
         exec_time = time.time() - start
-        
-        c_python = matrix_to_python(C, matrix_size, matrix_size)
+
+        c_python = matrix_to_python(c, matrix_size, matrix_size)
         assert verify_multiplication(a_python, b_python, c_python), f"Error in {mul_func.__name__}!"
-        
-        lib.free_matrix(matrix_size, C)
         
         return exec_time
     
-    A = lib.allocate_matrix(matrix_size, matrix_size)
-    B = lib.allocate_matrix(matrix_size, matrix_size)
-    
+    A, B, C = lib.allocate_matrix(matrix_size, matrix_size), lib.allocate_matrix(matrix_size, matrix_size), lib.allocate_matrix(matrix_size, matrix_size)
     lib.generate_matrix(matrix_size, matrix_size, A)
     lib.generate_matrix(matrix_size, matrix_size, B)
-    
-    a_python = matrix_to_python(A, matrix_size, matrix_size)
-    b_python = matrix_to_python(B, matrix_size, matrix_size)
-    
+
+    a_python, b_python = matrix_to_python(A, matrix_size, matrix_size), matrix_to_python(B, matrix_size, matrix_size)
+
     times = {
-        "Row-major order": measure_time(lib.row_major_mul, matrix_size, A, B, a_python, b_python),
-        "Column-major order": measure_time(lib.column_major_mul, matrix_size, A, B, a_python, b_python),
-        "Z order": {block_size: measure_time(lib.zorder_mul, matrix_size, A, B, a_python, b_python, block_size_arg=block_size)}
+        "Row-major order": measure_time(lib.row_major_mul, A, B, C, a_python, b_python),
+        "Column-major order": measure_time(lib.column_major_mul, A, B, C, a_python, b_python),
+        "Z order": {block_size: measure_time(lib.zorder_mul, A, B, C, a_python, b_python, block_size_arg=block_size)}
     }
-    
+
     lib.free_matrix(matrix_size, A)
     lib.free_matrix(matrix_size, B)
-    
+    lib.free_matrix(matrix_size, C)
+
     return times
     
 if __name__ == "__main__":
