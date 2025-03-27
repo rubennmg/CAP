@@ -39,7 +39,7 @@ def run_phase_2(matrix_size: int, block_size: int) -> Dict[str, float]:
     """Run phase 2 of the experiment."""
     
     def measure_time(mul_func: Callable, *args, block_size_arg: int = None) -> float:
-        """Helper function to measure execution time of a matrix multiplication."""
+        """Helper function to measure execution time of matrix multiplication in phase 2."""
         c_c = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
         
         if mul_func == lib.zorder_mul:

@@ -48,7 +48,7 @@ def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
     """Run phase 1 of the experiment with validation."""
 
     def measure_time(mul_func: callable, a: matrix, b: matrix) -> float:
-        """Helper function to measure execution time of a matrix multiplication and validate the result."""
+        """Measure the execution time of matrix multiplication functions used in phase 1."""
         C = [[0] * matrix_size for _ in range(matrix_size)]
         start = time.time()
         mul_func(a, b, C)
