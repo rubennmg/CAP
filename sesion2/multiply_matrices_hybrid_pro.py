@@ -53,13 +53,14 @@ def run_phase_3(matrix_size: int, block_size: int) -> Dict[str, float]:
         """Measure the execution time of matrix multiplication functions used in phase 3."""
         lib.fill_matrix(matrix_size, matrix_size, c, 0)
         
-        start = time.time()
         if mul_func == lib.zorder_mul:
+            start = time.time()
             mul_func(matrix_size, matrix_size, a, b, c, block_size_arg)
         else:
+            start = time.time()
             mul_func(matrix_size, matrix_size, a, b, c)
+        
         exec_time = time.time() - start
-
         c_python = matrix_to_python(c, matrix_size, matrix_size)
         assert verify_multiplication(a_python, b_python, c_python), f"Error in {mul_func.__name__}!"
         
