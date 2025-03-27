@@ -68,7 +68,7 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
         print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:.6f};{column_major_avg:.6f};{zorder_avg:.6f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256]
+    matrix_sizes = [2, 4, 8, 16, 32]
     iterations = 10
     
     run_phase(1, matrix_sizes, iterations)
