@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 #include "mul_functions.h"
 
 #define ROW_MAJOR_STR "Row-major order"
@@ -13,6 +14,22 @@ typedef struct
     double column_major_time;
     double *zorder_times;
 } Result;
+
+bool check_matrices(int rows, int cols, int **A, int **B)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (A[i][j] != B[i][j])
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 int *calculate_block_sizes(int matrix_size, int *num_block_sizes)
 {
@@ -78,6 +95,13 @@ void benchmark(int rows, int columns, int block_size, Result *result, int block_
     zorder_mul(rows, columns, A, B, C_zorder, block_size);
     end = clock();
     result->zorder_times[block_index] += (double)(end - start) / CLOCKS_PER_SEC;
+
+    // Check results
+    if (!check_matrices(rows, columns, C_rows, C_columns) || !check_matrices(rows, columns, C_rows, C_zorder))
+    {
+        fprintf(stderr, "Error: Results do not match.\n");
+        exit(1);
+    }
 
     free_matrix(rows, A);
     free_matrix(rows, B);
