@@ -8,7 +8,7 @@ from typing import List, Dict, Callable
 type matrix = List[List[int]]
 
 # Load shared library
-lib = ctypes.CDLL('./liboperations.so')
+lib = ctypes.CDLL('./lib/liboperations.so')
 
 # Common arguments for matrix multiplication functions
 common_args = [
