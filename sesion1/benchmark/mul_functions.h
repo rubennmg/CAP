@@ -7,6 +7,8 @@
 
 int **allocate_matrix(int rows, int columns);
 void free_matrix(int rows, int **matrix);
+void init_matrices(int matrix_size, int ***A, int ***B, int ***C_rows, int ***C_columns, int ***C_zorder);
+void free_matrices(int matrix_size, int **A, int **B, int **C_rows, int **C_columns, int **C_zorder);
 void generate_matrix(int rows, int columns, int **matrix);
 void fill_matrix(int rows, int columns, int **matrix, int value);
 void row_major_mul(int rows, int columns, int **A, int **B, int **C);

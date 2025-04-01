@@ -57,7 +57,6 @@ def update_results(results: Dict[str, float], matrix_size: int, current_result: 
     for bz, time in current_result[z_order_str].items():
         results[matrix_size][z_order_str][bz] += time
 
-
 def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dict[str, float]):
     """Print the results stored in the dictionary."""
     row_major_avg = results[matrix_size][row_major_str] / iterations
@@ -68,9 +67,9 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
         print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:.6f};{column_major_avg:.6f};{zorder_avg:.6f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32]
-    iterations = 10
+    matrix_sizes = [64, 128, 256, 512]
+    iterations = 5
     
-    run_phase(1, matrix_sizes, iterations)
-    run_phase(2, matrix_sizes, iterations)
+    # run_phase(1, matrix_sizes, iterations)
+    # run_phase(2, matrix_sizes, iterations)
     run_phase(3, matrix_sizes, iterations)

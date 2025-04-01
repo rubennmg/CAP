@@ -46,6 +46,55 @@ void free_matrix(int rows, int **matrix)
 }
 
 /**
+ * Initializes all matrices for the benchmark.
+ * A and B are filled with random numbers.
+ * @param matrix_size Size of the matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C_rows Pointer to the result matrix in row-major order.
+ * @param C_columns Pointer to the result matrix in column-major order.
+ * @param C_zorder Pointer to the result matrix in Z-order.
+ */
+void init_matrices(int matrix_size, int ***A, int ***B, int ***C_rows, int ***C_columns, int ***C_zorder)
+{
+    *A = allocate_matrix(matrix_size, matrix_size);
+    *B = allocate_matrix(matrix_size, matrix_size);
+    *C_rows = allocate_matrix(matrix_size, matrix_size);
+    *C_columns = allocate_matrix(matrix_size, matrix_size);
+    *C_zorder = allocate_matrix(matrix_size, matrix_size);
+
+    if (*A == NULL || *B == NULL || *C_rows == NULL || *C_columns == NULL || *C_zorder == NULL)
+    {
+        fprintf(stderr, "Error: Could not allocate memory for matrices.\n");
+        exit(1);
+    }
+
+    srand(time(NULL));
+    generate_matrix(matrix_size, matrix_size, *A);
+    generate_matrix(matrix_size, matrix_size, *B);
+}
+
+/**
+ * Frees memory allocated for all matrices used in the benchmark.
+ * @param matrix_size Size of the matrices.
+ * @param A Pointer to the first matrix.
+ * @param B Pointer to the second matrix.
+ * @param C_rows Pointer to the result matrix in row-major order.
+ * @param C_columns Pointer to the result matrix in column-major order.
+ * @param C_zorder Pointer to the result matrix in Z-order.
+ * @note This function assumes that all matrices have been allocated and initialized.
+ *       It does not check for NULL pointers.
+ */
+void free_matrices(int matrix_size, int **A, int **B, int **C_rows, int **C_columns, int **C_zorder)
+{
+    free_matrix(matrix_size, A);
+    free_matrix(matrix_size, B);
+    free_matrix(matrix_size, C_rows);
+    free_matrix(matrix_size, C_columns);
+    free_matrix(matrix_size, C_zorder);
+}
+
+/**
  * Generates random numbers for a matrix.
  * @param rows Number of rows in the matrix.
  * @param columns Number of columns in the matrix.
