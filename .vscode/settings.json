@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "cstdlib": "c",
-        "random": "cpp"
+        "random": "cpp",
+        "mul_functions.h": "c",
+        "stdlib.h": "c"
     }
 }
