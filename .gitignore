@@ -1,2 +1,20 @@
 *.o
 *.csv
+
+1-multiply_matrices
+mul_benchmark
+__pycache__
+
+# Latex
+*.aux
+*.gz
+*.out
+*.fls
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+*.lof
+*.lot
