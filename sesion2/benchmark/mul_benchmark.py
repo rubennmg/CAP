@@ -1,4 +1,7 @@
 import time
+import sys
+
+sys.path.append("..")
 
 from multiply_matrices import run_phase_1_row_col, run_phase_1_zorder
 from multiply_matrices_hybrid import run_phase_2_row_col, run_phase_2_zorder
@@ -71,7 +74,7 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
         print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:f};{column_major_avg:f};{zorder_avg:f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512]
+    matrix_sizes = [2, 4, 8, 16, 32, 64]
     iterations = 5
     
     start = time.time()
