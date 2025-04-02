@@ -1,59 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <stdbool.h>
 #include "mul_functions.h"
 
 #define ROW_MAJOR_STR "Row-major order"
 #define COLUMN_MAJOR_STR "Column-major order"
 #define Z_ORDER_STR "Z order"
 
+/**
+ * Struct to hold the results of the benchmark
+ */
 typedef struct
 {
-    double row_major_time;
-    double column_major_time;
-    double *zorder_times;
+    double row_major_time;    /* Execution time with row major algorithm */
+    double column_major_time; /* Execution time with column major algorithm */
+    double *zorder_times;     /* Execution time with z-order algorithm */
 } Result;
 
-bool check_matrices(int matrix_size, int **A, int **B)
+/**
+ * Prints the results of the benchmark
+ * @param matrix_size Size of the matrices
+ * @param num_blocks Number of blocks for z-order algorithm
+ * @param block_sizes Array of block sizes
+ * @param result Pointer to the result struct
+ */
+void print_results(int matrix_size, int num_blocks, int *block_sizes, Result *result)
 {
-    for (int i = 0; i < matrix_size; i++)
+    for (int i = 0; i < num_blocks; i++)
     {
-        for (int j = 0; j < matrix_size; j++)
-        {
-            if (A[i][j] != B[i][j])
-            {
-                return false;
-            }
-        }
+        printf("%d;%d;%f;%f;%f\n",
+               matrix_size, block_sizes[i],
+               result->row_major_time,
+               result->column_major_time,
+               result->zorder_times[i]);
     }
-
-    return true;
 }
 
-int *calculate_block_sizes(int matrix_size, int *num_block_sizes)
+/**
+ * Calculates the average execution times for the benchmark
+ * @param result Pointer to the result struct
+ * @param iterations Number of iterations
+ * @param num_blocks Number of blocks for z-order algorithm
+ */
+void calc_results(Result *result, int iterations, int num_blocks)
 {
-    int *block_sizes = (int *)malloc(matrix_size * sizeof(int));
-    if (block_sizes == NULL)
+    result->row_major_time /= iterations;
+    result->column_major_time /= iterations;
+    for (int i = 0; i < num_blocks; i++)
     {
-        fprintf(stderr, "Error: Could not allocate memory for block sizes.\n");
-        exit(1);
+        result->zorder_times[i] /= iterations;
     }
-
-    int count = 0;
-    for (int i = 2; i < matrix_size; i++)
-    {
-        if (matrix_size % i == 0)
-        {
-            block_sizes[count++] = i;
-        }
-    }
-
-    *num_block_sizes = count;
-
-    return block_sizes;
 }
 
+/**
+ * Runs the benchmark for the given matrices and block sizes
+ * It fills the matrices with zeros, runs the row major, column major, and z-order algorithms,
+ * checks the results, and stores the execution times
+ * @param matrix_size Size of the matrices
+ * @param block_sizes Array of block sizes
+ * @param num_blocks Number of blocks for z-order algorithm
+ * @param result Pointer to the result struct
+ * @param A First matrix
+ * @param B Second matrix
+ * @param C_rows Result matrix for row major algorithm
+ * @param C_columns Result matrix for column major algorithm
+ * @param C_zorder Result matrix for z-order algorithm
+ */
 void benchmark(int matrix_size, int *block_sizes, int num_blocks, Result *result,
                int **A, int **B, int **C_rows, int **C_columns, int **C_zorder)
 {
@@ -103,18 +115,11 @@ void benchmark(int matrix_size, int *block_sizes, int num_blocks, Result *result
     }
 }
 
-void print_results(int matrix_size, int num_blocks, int *block_sizes, Result *result)
-{
-    for (int i = 0; i < num_blocks; i++)
-    {
-        printf("%d;%d;%f;%f;%f\n",
-               matrix_size, block_sizes[i],
-               result->row_major_time,
-               result->column_major_time,
-               result->zorder_times[i]);
-    }
-}
-
+/**
+ * Initializes the result struct
+ * @param num_blocks Number of blocks for z-order algorithm
+ * @return Initialized result struct
+ */
 Result init_results(int num_blocks)
 {
     Result result = {0.0, 0.0, (double *)malloc(num_blocks * sizeof(double))};
@@ -132,16 +137,43 @@ Result init_results(int num_blocks)
     return result;
 }
 
-void calc_results(Result *result, int iterations, int num_blocks)
+/**
+ * Calculates the block sizes for the given matrix size
+ * It is used to determine the block sizes for the z-order algorithm
+ * @param matrix_size Size of the matrix
+ * @param num_block_sizes Pointer to the number of block sizes
+ * @return Array of block sizes
+ */
+int *calculate_block_sizes(int matrix_size, int *num_block_sizes)
 {
-    result->row_major_time /= iterations;
-    result->column_major_time /= iterations;
-    for (int i = 0; i < num_blocks; i++)
+    int *block_sizes = (int *)malloc(matrix_size * sizeof(int));
+    if (block_sizes == NULL)
     {
-        result->zorder_times[i] /= iterations;
+        fprintf(stderr, "Error: Could not allocate memory for block sizes.\n");
+        exit(1);
     }
+
+    int count = 0;
+    for (int i = 2; i < matrix_size; i++)
+    {
+        if (matrix_size % i == 0)
+        {
+            block_sizes[count++] = i;
+        }
+    }
+
+    *num_block_sizes = count;
+
+    return block_sizes;
 }
 
+/**
+ * Runs the benchmark for the given matrix sizes and iterations
+ * It initializes the matrices, runs the benchmark, and prints the results
+ * @param matrix_sizes Array of matrix sizes
+ * @param size_count Number of matrix sizes
+ * @param iterations Number of iterations to run the benchmark
+ */
 void run_benchmark(int matrix_sizes[], int size_count, int iterations)
 {
     for (int i = 0; i < size_count; i++)
@@ -168,11 +200,14 @@ void run_benchmark(int matrix_sizes[], int size_count, int iterations)
     }
 }
 
+/**
+ * Main function
+ */
 int main()
 {
     clock_t start, end;
-    int matrix_sizes[] = {512};
-    int iterations = 3;
+    int matrix_sizes[] = {4, 8, 16, 32, 64, 128, 256, 512};
+    int iterations = 5;
 
     start = clock();
     printf("Matrix size;Block size;Row-major order (s);Column-major order (s);Z order (s)\n");
