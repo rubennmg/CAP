@@ -1,6 +1,8 @@
-from multiply_matrices import run_phase_1
-from multiply_matrices_hybrid import run_phase_2
-from multiply_matrices_hybrid_pro import run_phase_3
+import time
+
+from multiply_matrices import run_phase_1_row_col, run_phase_1_zorder
+from multiply_matrices_hybrid import run_phase_2_row_col, run_phase_2_zorder
+from multiply_matrices_hybrid_pro import run_phase_3_row_col, run_phase_3_zorder
 from typing import List, Dict
 
 type matrix = List[List[int]]
@@ -40,22 +42,24 @@ def initialize_results(results: Dict[str, float], matrix_size: int, block_sizes:
 
 def process_block_sizes(phase_id: int, matrix_size: int, block_sizes: List[int], iterations: int, results: Dict[str, float]):
     """Process the block sizes for the given matrix size."""
-    for block_size in block_sizes:
-        for _ in range(iterations):
+    for _ in range(iterations):
+        if phase_id == 1:
+            row_time, col_time = run_phase_1_row_col(matrix_size)
+        elif phase_id == 2:
+            row_time, col_time = run_phase_2_row_col(matrix_size)
+        else:
+            row_time, col_time = run_phase_3_row_col(matrix_size)
+        
+        results[matrix_size][row_major_str] += row_time
+        results[matrix_size][column_major_str] += col_time
+        for block_size in block_sizes:
             if phase_id == 1:
-                current_result = run_phase_1(matrix_size, block_size)
+                zorder_time = run_phase_1_zorder(matrix_size, block_size)
             elif phase_id == 2:
-                current_result = run_phase_2(matrix_size, block_size)
+                zorder_time = run_phase_2_zorder(matrix_size, block_size)
             else:
-                current_result = run_phase_3(matrix_size, block_size)
-            update_results(results, matrix_size, current_result)
-
-def update_results(results: Dict[str, float], matrix_size: int, current_result: Dict[str, float]):
-    """Update the results dictionary."""
-    results[matrix_size][row_major_str] += current_result[row_major_str]
-    results[matrix_size][column_major_str] += current_result[column_major_str]
-    for bz, time in current_result[z_order_str].items():
-        results[matrix_size][z_order_str][bz] += time
+                zorder_time = run_phase_3_zorder(matrix_size, block_size)
+            results[matrix_size][z_order_str][block_size] += zorder_time
 
 def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dict[str, float]):
     """Print the results stored in the dictionary."""
@@ -64,12 +68,16 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
 
     for block_size, time in results[matrix_size][z_order_str].items():
         zorder_avg = time / iterations
-        print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:.6f};{column_major_avg:.6f};{zorder_avg:.6f}")
+        print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:f};{column_major_avg:f};{zorder_avg:f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [64, 128, 256, 512]
+    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512]
     iterations = 5
     
-    # run_phase(1, matrix_sizes, iterations)
-    # run_phase(2, matrix_sizes, iterations)
+    start = time.time()
+    run_phase(1, matrix_sizes, iterations)
+    run_phase(2, matrix_sizes, iterations)
     run_phase(3, matrix_sizes, iterations)
+    end = time.time()
+    
+    print(f"\nTotal execution time: {end - start:f} seconds")

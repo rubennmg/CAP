@@ -2,7 +2,7 @@ import sys
 import random
 import time
 from utils import verify_multiplication, print_matrix
-from typing import List, Dict
+from typing import List, Tuple
 
 type matrix = List[List[int]]
 
@@ -44,27 +44,41 @@ def zorder_mul(a: matrix, b: matrix, c: matrix, block_size: int) -> None:
                         for kk in range(k, min(k + block_size, columns)):
                             c[ii][jj] += a[ii][kk] * b[kk][jj]
 
-def run_phase_1(matrix_size: int, block_size: int) -> Dict[str, float]:
+def run_phase_1_row_col(matrix_size: int) -> Tuple[float, float]:
     """Run phase 1 of the experiment with validation."""
-
-    def measure_time(mul_func: callable, a: matrix, b: matrix) -> float:
-        """Measure the execution time of matrix multiplication functions used in phase 1."""
-        C = [[0] * matrix_size for _ in range(matrix_size)]
-        start = time.time()
-        mul_func(a, b, C)
-        exec_time = time.time() - start
-        
-        assert verify_multiplication(a, b, C), f"Error in {mul_func.__name__}!"
-        return exec_time
-
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
 
-    return {
-        "Row-major order": measure_time(row_major_mul, A, B),
-        "Column-major order": measure_time(column_major_mul, A, B),
-        "Z order": {block_size: measure_time(lambda a, b, c: zorder_mul(a, b, c, block_size), A, B)}
-    }
+    c_row = [[0] * matrix_size for _ in range(matrix_size)]
+    c_col = [[0] * matrix_size for _ in range(matrix_size)]
+
+    start_row = time.time()
+    row_major_mul(A, B, c_row)
+    exec_time_row = time.time() - start_row
+
+    start_col = time.time()
+    column_major_mul(A, B, c_col)
+    exec_time_col = time.time() - start_col
+
+    assert verify_multiplication(A, B, c_row), "Error in row-major multiplication!"
+    assert verify_multiplication(A, B, c_col), "Error in column-major multiplication!"
+
+    return exec_time_row, exec_time_col
+
+def run_phase_1_zorder(matrix_size: int, block_size: int) -> float:
+    """Run phase 1 of the experiment with validation."""
+    A = generate_matrix(matrix_size, matrix_size)
+    B = generate_matrix(matrix_size, matrix_size)
+
+    C = [[0] * matrix_size for _ in range(matrix_size)]
+
+    start = time.time()
+    zorder_mul(A, B, C, block_size)
+    exec_time = time.time() - start
+
+    assert verify_multiplication(A, B, C), "Error in Z order multiplication!"
+    
+    return exec_time
     
 if __name__ == "__main__":  
     if len(sys.argv) != 4:

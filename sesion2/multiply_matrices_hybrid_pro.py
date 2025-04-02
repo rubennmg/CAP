@@ -2,7 +2,7 @@ import ctypes
 import sys
 import time
 from utils import verify_multiplication, print_matrix, matrix_to_python
-from typing import List, Dict, Callable
+from typing import List, Tuple
 
 type matrix = List[List[int]]
 
@@ -45,44 +45,71 @@ lib.column_major_mul.restype = None
 # zorder_mul function prototype
 lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
-    
-def run_phase_3(matrix_size: int, block_size: int) -> Dict[str, float]:
-    """Run phase 3 of the experiment, measuring matrix multiplication times."""
-    
-    def measure_time(mul_func: Callable, a: ctypes.POINTER, b: ctypes.POINTER, c:ctypes.POINTER, a_python: matrix, b_python: matrix, block_size_arg: int = None) -> float:
-        """Measure the execution time of matrix multiplication functions used in phase 3."""
-        lib.fill_matrix(matrix_size, matrix_size, c, 0)
-        
-        if mul_func == lib.zorder_mul:
-            start = time.time()
-            mul_func(matrix_size, matrix_size, a, b, c, block_size_arg)
-        else:
-            start = time.time()
-            mul_func(matrix_size, matrix_size, a, b, c)
-        
-        exec_time = time.time() - start
-        c_python = matrix_to_python(c, matrix_size, matrix_size)
-        assert verify_multiplication(a_python, b_python, c_python), f"Error in {mul_func.__name__}!"
-        
-        return exec_time
-    
-    A, B, C = lib.allocate_matrix(matrix_size, matrix_size), lib.allocate_matrix(matrix_size, matrix_size), lib.allocate_matrix(matrix_size, matrix_size)
+
+def run_phase_3_row_col(matrix_size: int) -> Tuple[float, float]:
+    """Run phase 3 of the experiment for row-major and column-major order."""
+    A = lib.allocate_matrix(matrix_size, matrix_size)
+    B = lib.allocate_matrix(matrix_size, matrix_size)
+    c_rows = lib.allocate_matrix(matrix_size, matrix_size)
+    c_columns = lib.allocate_matrix(matrix_size, matrix_size)
+
     lib.generate_matrix(matrix_size, matrix_size, A)
     lib.generate_matrix(matrix_size, matrix_size, B)
 
-    a_python, b_python = matrix_to_python(A, matrix_size, matrix_size), matrix_to_python(B, matrix_size, matrix_size)
+    # Fill result matrices with zeros
+    lib.fill_matrix(matrix_size, matrix_size, c_rows, 0)
+    lib.fill_matrix(matrix_size, matrix_size, c_columns, 0)
 
-    times = {
-        "Row-major order": measure_time(lib.row_major_mul, A, B, C, a_python, b_python),
-        "Column-major order": measure_time(lib.column_major_mul, A, B, C, a_python, b_python),
-        "Z order": {block_size: measure_time(lib.zorder_mul, A, B, C, a_python, b_python, block_size_arg=block_size)}
-    }
+    start = time.time()
+    lib.row_major_mul(matrix_size, matrix_size, A, B, c_rows)
+    row_time = time.time() - start
+
+    start = time.time()
+    lib.column_major_mul(matrix_size, matrix_size, A, B, c_columns)
+    col_time = time.time() - start
+
+    c_python_rows = matrix_to_python(c_rows, matrix_size, matrix_size)
+    c_python_columns = matrix_to_python(c_columns, matrix_size, matrix_size)
+    a_python = matrix_to_python(A, matrix_size, matrix_size)
+    b_python = matrix_to_python(B, matrix_size, matrix_size)
+
+    assert verify_multiplication(a_python, b_python, c_python_rows), "Error in row-major multiplication"
+    assert verify_multiplication(a_python, b_python, c_python_columns), "Error in column-major multiplication"
 
     lib.free_matrix(matrix_size, A)
     lib.free_matrix(matrix_size, B)
-    lib.free_matrix(matrix_size, C)
+    lib.free_matrix(matrix_size, c_rows)
+    lib.free_matrix(matrix_size, c_columns)
 
-    return times
+    return row_time, col_time
+
+def run_phase_3_zorder(matrix_size: int, block_size: int) -> float:
+    """Run phase 3 of the experiment for Z order."""
+    A = lib.allocate_matrix(matrix_size, matrix_size)
+    B = lib.allocate_matrix(matrix_size, matrix_size)
+    c_zorder = lib.allocate_matrix(matrix_size, matrix_size)
+
+    lib.generate_matrix(matrix_size, matrix_size, A)
+    lib.generate_matrix(matrix_size, matrix_size, B)
+
+    # Fill result matrices with zeros
+    lib.fill_matrix(matrix_size, matrix_size, c_zorder, 0)
+
+    start = time.time()
+    lib.zorder_mul(matrix_size, matrix_size, A, B, c_zorder, block_size)
+    zorder_time = time.time() - start
+
+    c_python_zorder = matrix_to_python(c_zorder, matrix_size, matrix_size)
+    a_python = matrix_to_python(A, matrix_size, matrix_size)
+    b_python = matrix_to_python(B, matrix_size, matrix_size)
+
+    assert verify_multiplication(a_python, b_python, c_python_zorder), "Error in Z order multiplication"
+
+    lib.free_matrix(matrix_size, A)
+    lib.free_matrix(matrix_size, B)
+    lib.free_matrix(matrix_size, c_zorder)
+
+    return zorder_time
     
 if __name__ == "__main__":
     if len(sys.argv) != 4:
