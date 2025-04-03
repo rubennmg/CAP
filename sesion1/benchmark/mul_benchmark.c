@@ -154,6 +154,7 @@ int *calculate_block_sizes(int matrix_size, int *num_block_sizes)
     }
 
     int count = 0;
+    block_sizes[count++] = 1;
     for (int i = 2; i < matrix_size; i++)
     {
         if (matrix_size % i == 0)
@@ -161,6 +162,7 @@ int *calculate_block_sizes(int matrix_size, int *num_block_sizes)
             block_sizes[count++] = i;
         }
     }
+    block_sizes[count++] = matrix_size;
 
     *num_block_sizes = count;
 
@@ -207,7 +209,7 @@ int main()
 {
     clock_t start, end;
     int matrix_sizes[] = {4, 8, 16, 32, 64, 128, 256, 512};
-    int iterations = 5;
+    int iterations = 8;
 
     start = clock();
     printf("Matrix size;Block size;Row-major order (s);Column-major order (s);Z order (s)\n");
