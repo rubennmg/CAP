@@ -208,8 +208,8 @@ void run_benchmark(int matrix_sizes[], int size_count, int iterations)
 int main()
 {
     clock_t start, end;
-    int matrix_sizes[] = {4, 8, 16, 32, 64, 128, 256, 512};
-    int iterations = 8;
+    int matrix_sizes[] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+    int iterations = 32;
 
     start = clock();
     printf("Matrix size;Block size;Row-major order (s);Column-major order (s);Z order (s)\n");
