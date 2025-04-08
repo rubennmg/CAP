@@ -29,9 +29,10 @@ def run_phase(phase_id: int, matrix_sizes: List[int], iterations: int):
 def calculate_block_sizes(matrix_size: int) -> List[int]:
     """Calculate the block sizes for the given matrix size."""
     block_sizes = []
-    for block_size in range(2, matrix_size + 1):
+    for block_size in range(1, matrix_size + 1):
         if matrix_size % block_size == 0 and matrix_size // block_size >= 2:
             block_sizes.append(block_size)
+    block_sizes.append(matrix_size)
     return block_sizes
 
 def initialize_results(results: Dict[str, float], matrix_size: int, block_sizes: List[int]):
@@ -74,8 +75,8 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
         print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:f};{column_major_avg:f};{zorder_avg:f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32, 64]
-    iterations = 5
+    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+    iterations = 32
     
     start = time.time()
     run_phase(1, matrix_sizes, iterations)

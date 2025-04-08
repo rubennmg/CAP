@@ -30,12 +30,12 @@ def column_major_mul(a: matrix, b: matrix, c: matrix) -> None:
 
 def zorder_mul(a: matrix, b: matrix, c: matrix, block_size: int) -> None:
     """Matrix multiplication in Z order (Morton Order)."""
-    if block_size % 2 != 0:
-        print("Block size must be a power of 2")
-        sys.exit(1)
-    
     rows = len(a)
     columns = len(b[0])
+    
+    if (rows % block_size != 0) or (columns % block_size != 0):
+        raise ValueError("Matrix size must be divisible by block size.")
+        
     for i in range(0, rows, block_size):
         for j in range(0, columns, block_size):
             for k in range(0, columns, block_size):
