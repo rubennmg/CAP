@@ -4,8 +4,6 @@ import time
 from utils import verify_multiplication, print_matrix, matrix_to_python
 from typing import List, Tuple
 
-type matrix = List[List[int]]
-
 # Load shared library
 lib = ctypes.CDLL('./lib/liboperations.so')
 

@@ -8,8 +8,6 @@ from multiply_matrices_hybrid import run_phase_2_row_col, run_phase_2_zorder
 from multiply_matrices_hybrid_pro import run_phase_3_row_col, run_phase_3_zorder
 from typing import List, Dict
 
-type matrix = List[List[int]]
-
 row_major_str = "Row-major order"
 column_major_str = "Column-major order"
 z_order_str = "Z order"

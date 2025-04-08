@@ -4,13 +4,11 @@ import time
 from utils import verify_multiplication, print_matrix
 from typing import List, Tuple
 
-type matrix = List[List[int]]
-
-def generate_matrix(rows, cols) -> matrix:
+def generate_matrix(rows, cols) -> List[List[int]]:
     """Create an array in Python as a list of lists."""
     return [[random.randint(0, 9) for _ in range(cols)] for _ in range(rows)]
 
-def row_major_mul(a: matrix, b: matrix, c: matrix) -> None:
+def row_major_mul(a: List[List[int]], b: List[List[int]], c: List[List[int]]) -> None:
     """Multiplication of matrices in row-major order."""
     rows = len(a)
     columns = len(b[0])
@@ -19,7 +17,7 @@ def row_major_mul(a: matrix, b: matrix, c: matrix) -> None:
             for k in range(columns):
                 c[i][j] += a[i][k] * b[k][j]
  
-def column_major_mul(a: matrix, b: matrix, c: matrix) -> None:
+def column_major_mul(a: List[List[int]], b: List[List[int]], c: List[List[int]]) -> None:
     """Multiplication of matrices in column-major order."""
     rows = len(a)
     columns = len(b[0])
@@ -28,7 +26,7 @@ def column_major_mul(a: matrix, b: matrix, c: matrix) -> None:
             for k in range(columns):
                 c[i][j] += a[i][k] * b[k][j]
 
-def zorder_mul(a: matrix, b: matrix, c: matrix, block_size: int) -> None:
+def zorder_mul(a: List[List[int]], b: List[List[int]], c: List[List[int]], block_size: int) -> None:
     """Matrix multiplication in Z order (Morton Order)."""
     rows = len(a)
     columns = len(b[0])

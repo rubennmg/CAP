@@ -5,8 +5,6 @@ import time
 from utils import verify_multiplication, print_matrix, matrix_to_c, matrix_to_python
 from typing import List, Tuple
 
-type matrix = List[List[int]]
-
 # Load shared library
 lib = ctypes.CDLL('./lib/liboperations.so')
 
@@ -31,7 +29,7 @@ lib.column_major_mul.restype = None
 lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
 
-def generate_matrix(rows: int, cols: int) -> matrix:
+def generate_matrix(rows: int, cols: int) -> List[List[int]]:
     """Create an array in Python as a list of lists."""
     return [[random.randint(0, 9) for _ in range(cols)] for _ in range(rows)]
 
