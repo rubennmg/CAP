@@ -1,6 +1,5 @@
 *.o
 *.csv
-*.sh
 1-multiply_matrices
 mul_benchmark
 __pycache__
