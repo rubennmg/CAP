@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include "mul_functions.h"
 
 #define ROW_MAJOR_STR "Row-major order"
