@@ -93,8 +93,6 @@ def run_phase_3_zorder(matrix_size: int, block_size: int) -> float:
     lib.fill_matrix(matrix_size, matrix_size, c_zorder, 0)
 
     lib.zorder_mul(matrix_size, matrix_size, A, B, c_zorder, block_size)
-    
-    zorder_time = time.time() - start
 
     # c_python_zorder = matrix_to_python(c_zorder, matrix_size, matrix_size)
     # a_python = matrix_to_python(A, matrix_size, matrix_size)
@@ -105,8 +103,10 @@ def run_phase_3_zorder(matrix_size: int, block_size: int) -> float:
     lib.free_matrix(matrix_size, A)
     lib.free_matrix(matrix_size, B)
     lib.free_matrix(matrix_size, c_zorder)
+    
+    exec_time = time.time() - start
 
-    return zorder_time
+    return exec_time
     
 if __name__ == "__main__":
     if len(sys.argv) != 4:

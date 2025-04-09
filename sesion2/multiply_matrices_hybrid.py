@@ -72,13 +72,14 @@ def run_phase_2_zorder(matrix_size: int, block_size: int) -> float:
     c_c_zorder = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
     
     lib.zorder_mul(matrix_size, matrix_size, a_c, b_c, c_c_zorder, block_size)
-    zorder_time = time.time() - start
+    
+    exec_time = time.time() - start
     
     # c_python_zorder = matrix_to_python(c_c_zorder, matrix_size, matrix_size)
     
     # assert verify_multiplication(A, B, c_python_zorder), "Error in Z order multiplication"
     
-    return zorder_time
+    return exec_time
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
