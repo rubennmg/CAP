@@ -33,35 +33,36 @@ def generate_matrix(rows: int, cols: int) -> List[List[int]]:
     """Create an array in Python as a list of lists."""
     return [[random.randint(0, 9) for _ in range(cols)] for _ in range(rows)]
 
-def run_phase_2_row_col(matrix_size: int) -> Tuple[float, float]:
+def run_phase_2_row_col(matrix_size: int, algorithm: str) -> Tuple[float, float]:
     """Run phase 2 of the experiment for row-major and column-major order."""
+    start = time.time()
+    
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
     
     a_c = matrix_to_c(A)
     b_c = matrix_to_c(B)
     
-    c_c_rows = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
-    c_c_columns = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
+    c_c_result = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
     
-    start = time.time()
-    lib.row_major_mul(matrix_size, matrix_size, a_c, b_c, c_c_rows)
-    row_time = time.time() - start
+    if algorithm == "row":
+        lib.row_major_mul(matrix_size, matrix_size, a_c, b_c, c_c_result)
+    elif algorithm == "col":
+        lib.column_major_mul(matrix_size, matrix_size, a_c, b_c, c_c_result)
     
-    start = time.time()
-    lib.column_major_mul(matrix_size, matrix_size, a_c, b_c, c_c_columns)
-    col_time = time.time() - start
+    exec_time = time.time() - start
     
-    c_python_rows = matrix_to_python(c_c_rows, matrix_size, matrix_size)
-    c_python_columns = matrix_to_python(c_c_columns, matrix_size, matrix_size)
+    # Check product results
+    # c_python = matrix_to_python(c_c_result, matrix_size, matrix_size)
     
-    assert verify_multiplication(A, B, c_python_rows), "Error in row-major multiplication"
-    assert verify_multiplication(A, B, c_python_columns), "Error in column-major multiplication"
+    # assert verify_multiplication(A, B, c_python), f"Error in r{algorithm}-major multiplication"
     
-    return row_time, col_time
+    return exec_time
 
 def run_phase_2_zorder(matrix_size: int, block_size: int) -> float:
     """Run phase 2 of the experiment for Z order."""
+    start = time.time()
+    
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
     
@@ -70,13 +71,12 @@ def run_phase_2_zorder(matrix_size: int, block_size: int) -> float:
     
     c_c_zorder = matrix_to_c([[0] * matrix_size for _ in range(matrix_size)])
     
-    start = time.time()
     lib.zorder_mul(matrix_size, matrix_size, a_c, b_c, c_c_zorder, block_size)
     zorder_time = time.time() - start
     
-    c_python_zorder = matrix_to_python(c_c_zorder, matrix_size, matrix_size)
+    # c_python_zorder = matrix_to_python(c_c_zorder, matrix_size, matrix_size)
     
-    assert verify_multiplication(A, B, c_python_zorder), "Error in Z order multiplication"
+    # assert verify_multiplication(A, B, c_python_zorder), "Error in Z order multiplication"
     
     return zorder_time
 

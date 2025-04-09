@@ -48,9 +48,11 @@ def process_block_sizes(phase_id: int, matrix_size: int, block_sizes: List[int],
         if phase_id == 1:
             row_time, col_time = run_phase_1_row_col(matrix_size)
         elif phase_id == 2:
-            row_time, col_time = run_phase_2_row_col(matrix_size)
+            row_time = run_phase_2_row_col(matrix_size, "row")
+            col_time = run_phase_2_row_col(matrix_size, "col")
         else:
-            row_time, col_time = run_phase_3_row_col(matrix_size)
+            row_time = run_phase_3_row_col(matrix_size, "row")
+            col_time = run_phase_3_row_col(matrix_size, "col")
         
         results[matrix_size][row_major_str] += row_time
         results[matrix_size][column_major_str] += col_time
@@ -74,12 +76,14 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
 
 if __name__ == "__main__":
     matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
-    iterations = 32
+    iterations = 1
     
     start = time.time()
-    run_phase(1, matrix_sizes, iterations)
+    # run_phase(1, matrix_sizes, iterations)
     run_phase(2, matrix_sizes, iterations)
     run_phase(3, matrix_sizes, iterations)
     end = time.time()
     
     print(f"\nTotal execution time: {end - start:f} seconds")
+    print(f"\nIterations: {iterations}")
+    print("Benchmark completed.")

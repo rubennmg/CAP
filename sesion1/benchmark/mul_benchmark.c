@@ -214,6 +214,8 @@ int main()
     end = clock();
 
     printf("\nTotal execution time: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
+    printf("Iterations: %d\n", iterations);
+    printf("Benchmark completed.\n");
 
     return 0;
 }
