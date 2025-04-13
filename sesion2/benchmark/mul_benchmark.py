@@ -76,7 +76,7 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
 
 if __name__ == "__main__":
     matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
-    iterations = 1
+    iterations = 32
     
     start = time.time()
     # run_phase(1, matrix_sizes, iterations)
