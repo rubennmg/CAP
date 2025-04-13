@@ -44,8 +44,20 @@ lib.column_major_mul.restype = None
 lib.zorder_mul.argtypes = common_args + [ctypes.c_int]
 lib.zorder_mul.restype = None
 
-def run_phase_3_row_col(matrix_size: int, algorithm: str) -> Tuple[float, float]:
-    """Run phase 3 of the experiment for row-major and column-major order."""
+def run_phase_3_row_col(matrix_size: int, algorithm: str) -> float:
+    """Run phase 3 of the experiment for row-major or column-major order.
+    This function measures the execution time of matrix multiplication using
+    row-major or column-major algorithm. 
+    Time measuring starts before the matrix generation with C and ends
+    after the multiplication with C.
+
+    Args:
+        matrix_size (int): Size of the matrix.
+        algorithm (str): Algorithm to use for multiplication ('row' or 'col').
+
+    Returns:
+        float: Execution time in seconds.
+    """
     start = time.time()
     
     A = lib.allocate_matrix(matrix_size, matrix_size)
@@ -79,7 +91,19 @@ def run_phase_3_row_col(matrix_size: int, algorithm: str) -> Tuple[float, float]
     return exec_time
 
 def run_phase_3_zorder(matrix_size: int, block_size: int) -> float:
-    """Run phase 3 of the experiment for Z order."""
+    """Run phase 3 of the experiment for Z-order algorithm.
+    This function measures the execution time of matrix multiplication using
+    Z-order algorithm.
+    Time measuring starts before the matrix generation with C and ends
+    after the multiplication with C.
+
+    Args:
+        matrix_size (int): Size of the matrix.
+        block_size (int): Block size for Z-order multiplication.
+
+    Returns:
+        float: Execution time in seconds.
+    """
     start = time.time()
    
     A = lib.allocate_matrix(matrix_size, matrix_size)

@@ -43,7 +43,17 @@ def zorder_mul(a: List[List[int]], b: List[List[int]], c: List[List[int]], block
                             c[ii][jj] += a[ii][kk] * b[kk][jj]
 
 def run_phase_1_row_col(matrix_size: int) -> Tuple[float, float]:
-    """Run phase 1 of the experiment with validation."""
+    """Run phase 1 of the experiment with validation.
+    This function measures the execution time of matrix multiplication using
+    row-major and column-major algorithms in Python.
+
+    Args:
+        matrix_size (int): Size of the matrix.
+
+    Returns:
+        Tuple[float, float]: Execution times in seconds for row-major 
+        and column-major multiplications.
+    """
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
 
@@ -64,7 +74,17 @@ def run_phase_1_row_col(matrix_size: int) -> Tuple[float, float]:
     return exec_time_row, exec_time_col
  
 def run_phase_1_zorder(matrix_size: int, block_size: int) -> float:
-    """Run phase 1 of the experiment with validation."""
+    """Run phase 1 of the experiment with validation.
+    This function measures the execution time of matrix multiplication using
+    Z-order algorithm in Python.
+
+    Args:
+        matrix_size (int): Size of the matrix.
+        block_size (int): Block size for Z-order multiplication.
+
+    Returns:
+        float: Execution time in seconds.
+    """
     A = generate_matrix(matrix_size, matrix_size)
     B = generate_matrix(matrix_size, matrix_size)
 
