@@ -16,7 +16,7 @@ def run_phase(phase_id: int, matrix_sizes: List[int], iterations: int):
     """Runs a phase of the experiment."""
     results = {}
     
-    print("Matrix size;Block size;Phase;Row-major order (s);Column-major order (s);Z order (s)")
+    print("Matrix size;Block size;Phase;Algorithm;Time(s)")
     
     for matrix_size in matrix_sizes:
         block_sizes = calculate_block_sizes(matrix_size)
@@ -69,13 +69,16 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
     """Print the results stored in the dictionary."""
     row_major_avg = results[matrix_size][row_major_str] / iterations
     column_major_avg = results[matrix_size][column_major_str] / iterations
+    
+    print(f"{matrix_size};-;{phase_id};row;{row_major_avg:f}")
+    print(f"{matrix_size};-;{phase_id};col;{column_major_avg:f}")
 
     for block_size, time in results[matrix_size][z_order_str].items():
         zorder_avg = time / iterations
-        print(f"{matrix_size};{block_size};{phase_id};{row_major_avg:f};{column_major_avg:f};{zorder_avg:f}")
+        print(f"{matrix_size};{block_size};{phase_id};zor;{zorder_avg:f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 394, 512, 636, 774, 892, 1024, 1152, 1280]
     iterations = 32
     
     start = time.time()

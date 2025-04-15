@@ -23,13 +23,11 @@ typedef struct
  */
 void print_results(int matrix_size, int num_blocks, int *block_sizes, Result *result)
 {
+    printf("%d;%s;%s;%f\n", matrix_size, "-", "row", result->row_major_time);
+    printf("%d;%s;%s;%f\n", matrix_size, "-", "col", result->column_major_time);
     for (int i = 0; i < num_blocks; i++)
     {
-        printf("%d;%d;%f;%f;%f\n",
-               matrix_size, block_sizes[i],
-               result->row_major_time,
-               result->column_major_time,
-               result->zorder_times[i]);
+        printf("%d;%d;%s;%f\n", matrix_size, block_sizes[i], "zor", result->zorder_times[i]);
     }
 }
 
@@ -205,11 +203,11 @@ void run_benchmark(int matrix_sizes[], int size_count, int iterations)
 int main()
 {
     clock_t start, end;
-    int matrix_sizes[] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024};
+    int matrix_sizes[] = {2, 4, 8, 16, 32, 64, 128, 256, 394, 512, 636, 774, 892, 1024, 1152, 1280};
     int iterations = 32;
 
     start = clock();
-    printf("Matrix size;Block size;Row-major order (s);Column-major order (s);Z order (s)\n");
+    printf("Matrix size;Block size;Algorithm;Time(s)\n");
     run_benchmark(matrix_sizes, sizeof(matrix_sizes) / sizeof(matrix_sizes[0]), iterations);
     end = clock();
 
