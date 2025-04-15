@@ -203,7 +203,7 @@ void run_benchmark(int matrix_sizes[], int size_count, int iterations)
 int main()
 {
     clock_t start, end;
-    int matrix_sizes[] = {2, 4, 8, 16, 32, 64, 128, 256, 394, 512, 636, 774, 892, 1024, 1152, 1280};
+    int matrix_sizes[] = {2, 4, 8, 16, 32, 64, 128, 256, 398, 512, 636, 774, 892, 1024, 1152, 1280, 1408, 1536};
     int iterations = 32;
 
     start = clock();

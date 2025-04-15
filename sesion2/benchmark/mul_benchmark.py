@@ -78,7 +78,7 @@ def print_results(phase_id: int, matrix_size: int, iterations: int, results: Dic
         print(f"{matrix_size};{block_size};{phase_id};zor;{zorder_avg:f}")
 
 if __name__ == "__main__":
-    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 394, 512, 636, 774, 892, 1024, 1152, 1280]
+    matrix_sizes = [2, 4, 8, 16, 32, 64, 128, 256, 398, 512, 636, 774, 892, 1024, 1152, 1280, 1408, 1536]
     iterations = 32
     
     start = time.time()
