@@ -4,17 +4,34 @@
 \fancyfoot[r]{\fecha}
 
 \section{Introducción}
-En esta sesión de prácticas de laboratorio se evalúan distintos esquemas de acceso a memoria en la multiplicación de matrices.
-Concretamente, se estudia el rendimiento de la multiplicación de matrices utilizando tres estrategias diferentes:
+En esta sesión de prácticas de laboratorio se evalúan distintos esquemas de acceso a memoria aplicados a la multiplicación de matrices.
+Concretamente, se analiza el rendimiento de esta operación matemática utilizando tres estrategias de acceso diferentes:
 
 \begin{itemize}
     \item \rowmajor
     \item \colmajor
     \item \zorder
 \end{itemize}
-El objetivo principal es determinar cuál de estas estrategias es más eficiente en términos de tiempo de ejecución y uso de memoria.
+El objetivo principal es determinar cuál de estas estrategias ofrece un mejor desempeño en términos de tiempo de ejecución y 
+eficiencia en el uso de memoria.
 
 \subsection{Desarrollo}
-Para llevar a cabo esta práctica, 
+Para el desarrollo de esta práctica, se han seguido las indicaciones recogidas en el guion de la sesión correspondiente. 
+Se han implementado las tres estrategias de acceso en el código fuente, y se han llevado a cabo diversas pruebas para medir su rendimiento.
+Con el fin de comparar los tiempos de ejecución, se ha desarrollado un programa en lenguaje C con fines de \textit{benchmarking}, 
+tal y como se detalla en el capítulo siguiente. Todo el código fuente se encuentra disponible públicamente en el siguiente 
+\href{https://github.com/rubennmg/CAP/tree/main/sesion1}{repositorio de GitHub}, así como en el archivo \textit{zip} asociado a esta entrega.
 
 \subsection{\textit{Benchmarking}}
+Además del trabajo realizado durante la sesión de laboratorio, se ha desarrollado un programa en C que automatiza la medición 
+de los tiempos de ejecución para las distintas estrategias de acceso a memoria. 
+
+Este programa, ubicado en el subdirectorio \textit{benchmark}, permite especificar diferentes tamaños de matriz y un número fijo de iteraciones para cada experimento.
+Durante la ejecución, se realiza la multiplicación de matrices utilizando cada uno de los esquemas de acceso, registrando el 
+tiempo requerido por cada estrategia. En el caso particular del algoritmo \textit{zorder}, se evalúan automáticamente todos los tamaños 
+de bloque posibles para cada tamaño de matriz, llevando a cabo la multiplicación con cada configuración.
+Cada multiplicación se repite tantas veces como iteraciones se hayan especificado, calculando el tiempo medio de ejecución de todas ellas. 
+Esto permite reducir significativamente el ruido en las mediciones y obtener resultados más precisos.
+
+Al finalizar, el programa devuelve un \textit{log} en formato CSV con los resultados otenidos. 
+Dichos tiempos de ejecución constituyen la base de los análisis y comparativas que se presentan en los capítulos siguientes.

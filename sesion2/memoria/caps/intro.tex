@@ -4,7 +4,35 @@
 \fancyfoot[r]{\fecha}
 
 \section{Introducción}
-En esta sesión de prácticas de laboratorio...
+En esta sesión de prácticas de laboratorio se evalúa la hibridación de lenguajes para la implementación de la multiplicación de matrices, 
+combinando específicamente \C\ y \python. La experimentación se divide entres fases:
+\vspace{0.15cm}
+\begin{itemize}
+    \item \textit{\textbf{Fase 1}}: Implementación de la multiplicación de matrices en \python\ y toma de tiempos.
+    \item \textit{\textbf{Fase 2}}: Creación y manejo de matrices con \python, multiplicación de matrices en \C\ y toma de tiempos.
+    \item \textit{\textbf{Fase 3}}: Creación y manejo de matrices con \C, multiplicación de matrices en \C\ y toma de tiempos.
+\end{itemize}
+\vspace{0.15cm}
+Utilizando la librería \textit{ctypes} se lleva a cabo la hibridación de ambos lenguajes, con el objetivo de evaluar el rendimiento de 
+cada una de las fases y comparar los resultados obtenidos en cada uno de los escenarios. La multiplicación de matrices se realizará 
+siguiendo los diferentes esquemas de acceso a memoria evaluados en la sesión anterior: \rowmajor, \colmajor\ y \zorder.
 
 \subsection{\textit{Desarrollo}}
+Para el desarrollo de esta práctica, se han seguido las indicaciones recogidas en el guion de la sesión correspondiente. 
+Se han implementado las tres fases del experimento, y se han llevado a cabo diversas pruebas para medir su rendimiento.
+Con el fin de comparar los tiempos de ejecución, se ha desarrollado un programa en \python\ con fines de \textit{benchmarking}, 
+tal y como se detalla en el capítulo siguiente. Todo el código fuente se encuentra disponible públicamente en el siguiente 
+\href{https://github.com/rubennmg/CAP/tree/main/sesion2}{repositorio de GitHub}, así como en el archivo \textit{zip} asociado a esta entrega.
 \subsection{\textit{Benchmarking}}
+Como parte complementaria al desarrollo de la sesión de laboratorio, se ha implementado un programa en \python\ que automatiza la medición de 
+los tiempos de ejecución correspondientes a cada una de las fases del experimento.
+
+Este programa, ubicado en el subdirectorio \textit{benchmark}, permite especificar diferentes tamaños de matriz y un número fijo de 
+iteraciones para cada prueba. Una vez configurado, ejecuta secuencialmente cada una de las fases, registrando el tiempo medio de 
+ejecución para la multiplicación de matrices en cada caso. Para facilitar esta tarea, en cada uno de los programas desarrollados en 
+esta práctica (\textit{multiply\_matrices.py}, \textit{multiply\_matrices\_hybrid.py} y \textit{multiply\_matrices\_hybrid\_pro.py}) se 
+han definido las funciones \textit{run\_phase\_X\_row\_col} y \textit{run\_phase\_X\_zorder}, donde \textit{X} indica el número de fase. 
+Estas funciones llevan a cabo la toma de tiempos de ejecución de cada producto en la fase correspondiente con los esquemas de acceso a memoria \rowmajor, \colmajor\ y \zorder.
+
+Una vez completadas todas las iteraciones, el programa genera un \textit{log} en formato CSV que recoge los resultados obtenidos. 
+Dichos tiempos de ejecución constituyen la base de los análisis y comparativas que se presentan en los capítulos siguientes.
