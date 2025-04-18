@@ -18,3 +18,5 @@ __pycache__
 *.lof
 *.lot
 *.lol
+
+!1.log
