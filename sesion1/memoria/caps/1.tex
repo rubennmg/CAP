@@ -3,10 +3,41 @@
 \fancyfoot[l]{\asignaturaAbbr}
 \fancyfoot[r]{\fecha}
 
-\section{\rowmajor}
-\label{sec:1}
+\section{Expectativas y análisis inicial} \label{sec:1}
+Antes de analizar los resultados obtenidos, se comentan las expectativas iniciales respecto al rendimiento de cada uno de 
+los esquemas de acceso a memoria aplicados al producto de matrices.
 
+\subsection{\rowmajor}
+El esquema \rowmajor\ se basa la lectura de matrices por filas, lo que, traspolado al producto de matrices (\( C = A \times B \))
+implica que la matriz resultado \textbf{C} se recorrerá de dicha forma. Esto es, para realizar el cálculo de cada elemento de la primera fila de la matriz 
+resultado, se recorrerá la primera file de la matriz \textbf{A} y todas las columnas de la matriz \textbf{B}. Este proceso se repetirá para cada una 
+de las filas de la matriz \textbf{C}. \\
+Se espera que este esquema de acceso a memoria sea muy eficiente, ya que minimiza la cantidad de fallos en caché. Concretamente, 
+para el cálculo de cada fila de la matriz \textbf{C}, se espera que se produzcan:
+\begin{itemize}
+    \item 1 único fallo de caché para la matriz \textbf{C}, al acceder al primer elemento de su primera fila.
+    \item 1 único fallo de caché para la matriz \textbf{A}, al acceder al primer elemento de su primera fila.
+    \item \(N \times N\) fallos de caché para la matriz \textbf{B}, ya que se accede columna a columna y cada columna tiene \(N\) elementos.
+\end{itemize}
 
+\subsection{\colmajor}
+El esquema \colmajor\ se basa la lectura de matrices por columnas, lo que, traspolado al producto de matrices (\( C = A \times B \))
+implica que la matriz resultado \textbf{C} se recorrerá de dicha forma. Esto es, para realizar el cálculo de cada elemento de la primera columna de la matriz
+resultado, se recorrerá la primera columna de la matriz \textbf{B} y todas las filas de la matriz \textbf{A}. Este proceso se repetirá para cada una
+de las columnas de la matriz \textbf{C}. \\
+Se espera que este esquema de acceso a memoria sea menos eficiente que el anterior, ya que se producen más fallos de caché. Concretamente,
+para el cálculo de cada columna de la matriz \textbf{C}, se espera que se produzcan:
+\begin{itemize}
+    \item \(N\) fallos de caché para la matriz \textbf{C}, ya que se accede a \(N\) elementos de su primera columna.
+    \item \(N\) fallos de caché para la matriz \textbf{A}, ya que se accede a \(N\) veces a cada una de sus filas.
+    \item \(N \times N\) fallos de caché para la matriz \textbf{B}, ya que se accede \(N\) veces a los \(N\) elementos de su primera columna.
+\end{itemize}
 
-
-
+\subsection{\zorder}
+El esquema \zorder\ se basa en la división recursiva de las matrices en submatrices de tamaño \(2^n \times 2^n\) y su posterior recorrido en orden Z.
+Traspolado al producto de matrices (\( C = A \times B \)), implica que la matriz resultado \textbf{C} se recorrerá en orden Z para cada una 
+de las submatrices en las que se haya dividido. \\
+Este esquema permite una mejor utilización de la memoria caché en casos donde las matrices a multiplicar son de grandes dimensiones, 
+ya que se accede a los elementos de forma más local. Sin embargo, su rendimiento puede verse afectado por el tamaño de bloque utilizado.
+Se espera, por tanto, que sea el esquema más eficiente en casos de matrices de grandes dimensiones. Predecir empíricamente el número de fallos 
+de caché en el uso de este esquema es algo muy complejo, por lo que su estudio se limita a la próxima experimentación y comparación de resultados.

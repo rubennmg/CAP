@@ -3,6 +3,8 @@
         "cstdlib": "c",
         "random": "cpp",
         "mul_functions.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "functions.h": "c",
+        "stdbool.h": "c"
     }
 }
