@@ -3,4 +3,38 @@
 \fancyfoot[l]{\asignaturaAbbr}
 \fancyfoot[r]{\fecha}
 
-\section{Conclusiones y dificultades} \label{sec:4}
+\section{Conclusiones} \label{sec:5}
+En esta sección se presentan las conclusiones obtenidas durante el desarrollo de la práctica y 
+a partir de los resultados obtenidos.
+
+
+\subsection{Curiosidades}
+\subsubsection{\rowmajor\ vs \colmajor} \label{subsec:5.1}
+En un principio, se esperaba que el esquema de acceso a memoria \rowmajor\ fuese más eficiente que \colmajor\ debido a la forma en la que se almacenan los datos en memoria.
+Sin embargo, los resultados obtenidos muestran lo contrario. Se ha analizado y revisado el código y la implementación de ambos esquemas por 
+si existiese algún error, pero no se ha encontrado nada que lo justifique. Incluso se han utilizado herramientas de análisis de rendimiento como \texttt{perf} 
+y, de forma contraria a lo analizado de forma empírica en la \autoref{sec:2}, \rowmajor\ produce más fallos de caché que \colmajor.
+
+La única explicación \textit{lógica} a este suceso es la mayor reutilización temporal que se produce en el esquema \colmajor\ respecto a \rowmajor. 
+En concreto, esto se debe a que, durante el cálculo de cada columna de la matriz resultado \( C \), se accede repetidamente a una misma columna de la matriz \( B \). 
+Dado que la matriz \( B \) está almacenada en memoria en orden por filas, acceder a una columna implica realizar saltos entre elementos que no son contiguos en memoria.
+Sin embargo, como esa misma columna se reutiliza varias veces seguidas dentro del mismo cálculo, los datos una vez cargados en caché permanecen disponibles durante varias iteraciones.
+
+A pesar de esta explicación, no se puede asegurar con total certeza que este fenómeno sea la causa principal de la diferencia de rendimiento entre ambos esquemas, 
+ya que en la práctica intervienen muchos factores de bajo nivel que pueden influir significativamente en los resultados.
+
+
+\subsubsection{Tamaños de bloque en \zorder}
+Como se comentó en la \autoref{sec:4}, para cada tamaño de matriz se ha probado con todos los tamaños de bloque posibles, incluyendo el tamaño de bloque \(1\) y el del propio tamaño de la matriz.
+Esto se ha realizado a propósito para comprobar qué sucede en cada caso. 
+
+La base del algoritmo \zorder\ es la división recursiva de las matrices en submatrices
+por lo que el uso de un tamaño de bloque \(1\) no tiene sentido, ya que no se produce dicha división. Esto se traduce en un rendimiento muy deficiente y se ha comprobado con los resultados.
+El uso de un tamaño de bloque igual al del tamaño de la matriz tampoco tiene sentido a nivel lógico, pero su rendimiento, si bien no es el mejor, es mucho más óptimo 
+que el del caso anterior.  
+
+\subsection{Dificultades}
+Durante el desarrollo e implementación de la práctica no se han encontrado dificultades significativas. Sí que es cierto que el hecho de haber realizado 
+un programa \textit{extra} para realizar \textit{benchmarks} de forma más simple y rápida ha supuesto un esfuerzo adicional, pero ha simplificado mucho el proceso 
+de toma de datos. La mayor dificultad ha sido la de averiguar y analizar por qué \rowmajor\ es más lento que \colmajor, ya que no se esperaba este resultado.
+La conclusión respecto a este fenómeno ha sido la comentada en la \autoref{subsec:5.1}.
