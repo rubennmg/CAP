@@ -3,8 +3,33 @@
 \fancyfoot[l]{\asignaturaAbbr}
 \fancyfoot[r]{\fecha}
 
-\section{Fase 1}
-\label{sec:1}
+\section{Expectativas y análisis inicial} \label{sec:2}
+Antes de comenzar con el análisis de los resultados obtenidos en las diferentes fases del experimento, se establecen 
+las expectativas iniciales en cuanto a los tiempos de ejecución y rendimiento de cada una de ellas.
+
+\subsection{Fase 1} \label{subsec:2.1}
+En esta primera fase se implementa la multitiplicación de matrices en \python\, así como la creación y manejo de las mimsmas.
+Ya que este lenguaje de programación no está optimizado para operaciones de bajo nivel, tal como es el producto 
+de matrices, se espera que los tiempos de ejecución sean considerablemente más altos en comparación a los obtenidos 
+en las fases posteriores. \\
+Será interesante analizar cómo se comportan las diferentes configuraciones de acceso a memoria 
+(\rowmajor, \colmajor\ y \zorder) en este contexto, y si existe alguna diferencia significativa respecto a las fases 
+2 y 3.
+
+\subsection{Fase 2} \label{subsec:2.2}
+En la segunda fase del experimento se implementa la multiplicación de matrices en \C\, mientras que la creación y manejo de las mismas se
+realiza en \python. Teniendo esto en cuenta, se espera que los tiempos de ejecución sean mucho más bajos que en la fase 1, 
+ya que \C\ es un lenguaje de programación de bajo nivel y está optimizado para este tipo de operaciones. \\
+Sin embargo, la creación y manejo de matrices en \python\ puede introducir cierta sobrecarga, lo que podría afectar
+los tiempos de ejecución.
+
+\subsection{Fase 3} \label{subsec:2.3}
+En esta última fase del experimento, tanto la creación y manejo, como la multiplicación de matrices se realizan en \C.
+Se espera que los tiempos de ejecución sean los más bajos de todas las fases, ya que se aprovechan al máximo las
+ventajas de \C\ en términos de eficiencia y optimización. \\
+En este contexto, sería interesante comparar estos tiempos de ejecución con los obtenidos en la sesión anterior, 
+donde la implementación y toma de tiempos se realizó exclusivamente en \C. Debe tenerse en cuenta que, en este caso, 
+la toma de tiempos se realiza en \python, lo que podría introducir cierta variabilidad en los resultados.
 
 
 
