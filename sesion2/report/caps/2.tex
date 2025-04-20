@@ -9,6 +9,8 @@ se han tomado los tiempos de ejecución de la multiplicación de matrices en \py
 Se han utilizado los siguientes tamaños de matrices: $N=2$, $N=4$, $N=8$, $N=16$, $N=32$, $N=64$, $N=128$, $N=256$, $N=512$ y $N=1024$. En el caso del 
 algoritmo de \zorder, se ha ejecutado con todos los tamaños de bloque posibles para cada tamaño de matriz. Todos los productos se han repetido 
 un total de $8$ iteraciones, y se ha tomado el tiempo medio de ejecución.
+
+\subsection{\rowmajor\ y \colmajor} \label{sec:3.1}
 En la Tabla \ref{tab:1} se presentan los resultados obtenidos para \rowmajor\ y \colmajor.
 
 \renewcommand{\arraystretch}{1.25}
@@ -24,7 +26,7 @@ En la Tabla \ref{tab:1} se presentan los resultados obtenidos para \rowmajor\ y 
         $512 \times 512$ & $27.198958$ & $25.990449$ \\
         $1024 \times 1024$ & $200.909463$ & $192.439038$ \\ \hline
     \end{tabular}
-    \caption{Tiempos de ejecución de \rowmajor\ y \colmajor\ en \python}
+    \caption{Tiempos de ejecución de \rowmajor\ y \colmajor\ en Fase 1}
     \label{tab:1}
 \end{table}
 \renewcommand{\arraystretch}{1.0}
@@ -35,7 +37,7 @@ tienen resultados de la sesión anterior. En la \autoref{fig:1} se grafican los 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.65\textwidth]{img/1.png}
-    \caption{Tiempos de ejecución de \rowmajor\ y \colmajor\ en \python}
+    \caption{Tiempos de ejecución de \rowmajor\ y \colmajor\ en Fase 1}
     \label{fig:1}
 \end{figure}
 
@@ -44,13 +46,14 @@ muchísimo más altos. \colmajor\ es ligeramente más rápido que \rowmajor, per
 
 \newpage
 
-Respecto al algoritmo de \zorder, en la \autoref{fig:2} se muestran los resultados obtenidos para los tamaños de matriz $512 \times 512$ y $1024 \times 1024$, los 
+\subsection{\zorder} \label{sec:3.2}
+Respecto al algoritmo \zorder, en la \autoref{fig:2} se muestran los resultados obtenidos para los tamaños de matriz $512 \times 512$ y $1024 \times 1024$, los 
 cuales se consideran los más representativos.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{img/2.png}
-    \caption{Tiempos de ejecución de \zorder\ en \python\ ($N = 512$ y $N = 1024$)}
+    \includegraphics[width=0.98\textwidth]{img/2.png}
+    \caption{Tiempos de ejecución de \zorder\ en Fase 1 ($N = 512$ y $N = 1024$)}
     \label{fig:2}
 \end{figure}
 
@@ -58,7 +61,6 @@ Se observa una tendencia decreciente en ambos casos cuando el tamaño de bloque 
 tamaño de bloque óptimo. De hecho, el uso de tamaños de bloque muy grandes (cercanos a $N/2$ e incluso $N$) produce un rendimiento muy similar al de 
 tamaños de bloque pequeños ($4, 8, 16, 32 ...$), lo que sugiere que no se está aprovechando la idea del propio algoritmo. Teniendo en cuenta 
 que en \python\ no se accede a memoria de la forma más eficiente, esta conclusión resulta bastante lógica.
-
 
 Respecto a su comparación con \rowmajor\ y \colmajor, teniendo en cuenta los mejores resultados de \zorder\ para cada tamaño de matriz,
 apenas mejora o iguala a los otros dos algoritmos. Quizá habiendo experimentado con tamaños de matriz aun mayores, se podrían haber 
@@ -79,6 +81,6 @@ En la \autoref{tab:2} se presenta la comparativa de los tiempos de ejecución de
         $512 \times 512$ & $27.198958$ & $25.990449$ & $26.586173$ \\
         $1024 \times 1024$ & $200.909463$ & $192.439038$ & $193.267807$ \\ \hline
     \end{tabular}
-    \caption{Tiempos de ejecución de los tres algoritmos en \python}
+    \caption{Tiempos de ejecución de los tres algoritmos en Fase 1}
     \label{tab:2}
 \end{table}
