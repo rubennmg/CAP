@@ -31,10 +31,10 @@ Esto se ha realizado a propósito para comprobar qué sucede en cada caso.
 La base del algoritmo \zorder\ es la división recursiva de las matrices en submatrices
 por lo que el uso de un tamaño de bloque \(1\) no tiene sentido, ya que no se produce dicha división. Esto se traduce en un rendimiento muy deficiente y se ha comprobado con los resultados.
 El uso de un tamaño de bloque igual al del tamaño de la matriz tampoco tiene sentido a nivel lógico, pero su rendimiento, si bien no es el mejor, es mucho más óptimo 
-que el del caso anterior.  
+que en el caso anterior.  
 
 \subsection{Dificultades}
 Durante el desarrollo e implementación de la práctica no se han encontrado dificultades significativas. Sí que es cierto que el hecho de haber realizado 
-un programa \textit{extra} para realizar \textit{benchmarks} de forma más simple y rápida ha supuesto un esfuerzo adicional, pero ha simplificado mucho el proceso 
+un programa ``extra'' para realizar \textit{benchmarks} de forma más simple y rápida ha supuesto un esfuerzo adicional, pero ha simplificado mucho el proceso 
 de toma de datos. La mayor dificultad ha sido la de averiguar y analizar por qué \rowmajor\ es más lento que \colmajor, ya que no se esperaba este resultado.
 La conclusión respecto a este fenómeno ha sido la comentada en la \autoref{subsec:5.1}.
