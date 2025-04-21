@@ -220,12 +220,12 @@ int main(int argc, char *argv[])
     printf("************************************************************\n");
 
     // Print matrices (development purposes)
-    // printf("\nRow major multiplication:");
-    // print_product(A, B, C_rows, rows, columns);
-    // printf("\nColumn major multiplication:");
-    // print_product(A, B, C_columns, rows, columns);
-    // printf("\nZ-order multiplication:");
-    // print_product(A, B, C_zorder, rows, columns);
+    printf("\nRow major multiplication:");
+    print_product(A, B, C_rows, rows, columns);
+    printf("\nColumn major multiplication:");
+    print_product(A, B, C_columns, rows, columns);
+    printf("\nZ-order multiplication:");
+    print_product(A, B, C_zorder, rows, columns);
 
     // Free matrices
     free_matrix(rows, A);

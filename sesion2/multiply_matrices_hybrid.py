@@ -72,10 +72,8 @@ def run_phase_2_row_col(matrix_size: int, algorithm: str) -> float:
     
     exec_time = time.time() - start
     
-    # Check product results
-    # c_python = matrix_to_python(c_c_result, matrix_size, matrix_size)
-    
-    # assert verify_multiplication(A, B, c_python), f"Error in r{algorithm}-major multiplication"
+    c_python = matrix_to_python(c_c_result, matrix_size, matrix_size)
+    assert verify_multiplication(A, B, c_python), f"Error in r{algorithm}-major multiplication"
     
     return exec_time
 
@@ -107,9 +105,8 @@ def run_phase_2_zorder(matrix_size: int, block_size: int) -> float:
     
     exec_time = time.time() - start
     
-    # c_python_zorder = matrix_to_python(c_c_zorder, matrix_size, matrix_size)
-    
-    # assert verify_multiplication(A, B, c_python_zorder), "Error in Z order multiplication"
+    c_python_zorder = matrix_to_python(c_c_zorder, matrix_size, matrix_size)
+    assert verify_multiplication(A, B, c_python_zorder), "Error in Z order multiplication"
     
     return exec_time
 

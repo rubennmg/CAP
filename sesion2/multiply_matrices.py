@@ -68,8 +68,8 @@ def run_phase_1_row_col(matrix_size: int) -> Tuple[float, float]:
     column_major_mul(A, B, c_col)
     exec_time_col = time.time() - start_col
 
-    # assert verify_multiplication(A, B, c_row), "Error in row-major multiplication!"
-    # assert verify_multiplication(A, B, c_col), "Error in column-major multiplication!"
+    assert verify_multiplication(A, B, c_row), "Error in row-major multiplication!"
+    assert verify_multiplication(A, B, c_col), "Error in column-major multiplication!"
 
     return exec_time_row, exec_time_col
  
@@ -94,7 +94,7 @@ def run_phase_1_zorder(matrix_size: int, block_size: int) -> float:
     zorder_mul(A, B, C, block_size)
     exec_time = time.time() - start
 
-    # assert verify_multiplication(A, B, C), "Error in Z order multiplication!"
+    assert verify_multiplication(A, B, C), "Error in Z order multiplication!"
     
     return exec_time
     

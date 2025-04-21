@@ -75,12 +75,10 @@ def run_phase_3_row_col(matrix_size: int, algorithm: str) -> float:
     elif algorithm == "col":
         lib.column_major_mul(matrix_size, matrix_size, A, B, c_result)
 
-    # Check product results
-    # c_python = matrix_to_python(c_result, matrix_size, matrix_size)
-    # a_python = matrix_to_python(A, matrix_size, matrix_size)
-    # b_python = matrix_to_python(B, matrix_size, matrix_size)
-
-    # assert verify_multiplication(a_python, b_python, c_python), f"Error in {algorithm}-major multiplication"
+    c_python = matrix_to_python(c_result, matrix_size, matrix_size)
+    a_python = matrix_to_python(A, matrix_size, matrix_size)
+    b_python = matrix_to_python(B, matrix_size, matrix_size)
+    assert verify_multiplication(a_python, b_python, c_python), f"Error in {algorithm}-major multiplication"
 
     lib.free_matrix(matrix_size, A)
     lib.free_matrix(matrix_size, B)
@@ -118,11 +116,10 @@ def run_phase_3_zorder(matrix_size: int, block_size: int) -> float:
 
     lib.zorder_mul(matrix_size, matrix_size, A, B, c_zorder, block_size)
 
-    # c_python_zorder = matrix_to_python(c_zorder, matrix_size, matrix_size)
-    # a_python = matrix_to_python(A, matrix_size, matrix_size)
-    # b_python = matrix_to_python(B, matrix_size, matrix_size)
-
-    # assert verify_multiplication(a_python, b_python, c_python_zorder), "Error in Z order multiplication"
+    c_python_zorder = matrix_to_python(c_zorder, matrix_size, matrix_size)
+    a_python = matrix_to_python(A, matrix_size, matrix_size)
+    b_python = matrix_to_python(B, matrix_size, matrix_size)
+    assert verify_multiplication(a_python, b_python, c_python_zorder), "Error in Z order multiplication"
 
     lib.free_matrix(matrix_size, A)
     lib.free_matrix(matrix_size, B)

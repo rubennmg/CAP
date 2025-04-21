@@ -82,7 +82,7 @@ if __name__ == "__main__":
     iterations = 32
     
     start = time.time()
-    # run_phase(1, matrix_sizes, iterations)
+    run_phase(1, matrix_sizes, iterations)
     run_phase(2, matrix_sizes, iterations)
     run_phase(3, matrix_sizes, iterations)
     end = time.time()
